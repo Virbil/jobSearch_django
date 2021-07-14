@@ -12,10 +12,9 @@
 </head>
 <body class="text-center d-flex flex-column min-vh-100" style="padding-top: 3.5rem;">
     <div class="container-fluid">
-        <!-- {% include "side-nav.html" %} -->
         <main role="main" class="inner cover">
             <div class="jumbotron h2">
-                    <h1 class="cover-heading">Welcome, {{ user_info.last_name }}</h1>
+                    <h1 class="cover-heading">Welcome, {{ user_info.first_name }} {{ user_info.last_name }}</h1>
             </div>
         </main>
     </div>
