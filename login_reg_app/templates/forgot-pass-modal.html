@@ -1,0 +1,29 @@
+<!-- Enter Email For Forgotten Password Modal -->
+<div id="results">
+    <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header modal-header-colored">
+                    <h3 class="modal-title">Reset Your Password?</h3>
+                </div>
+                <div class="modal-body">
+                    <div id="getEmailErrors" style="color: red;"></div>
+                    <h2 class="lead text-left">Enter your email address.</h2>
+                    <form action="get-email" method="POST" autocomplete="off" id="getEmailForm">
+                        {% csrf_token %}
+                        <div class="form-group row">
+                            <div class="input-group-prepend col-sm-4">
+                                <span class="input-group-text">Email: </span>
+                            </div>
+                            <div class="col-8">
+                                <input type="email" id="user-email" name="user-email" class="form-control">
+                            </div>
+                        </div>
+                        <button class='btn btn-primary' type='submit'>Submit</button>
+                        <button class='btn btn-secondary' type='button' data-dismiss='modal'>Cancel</button>
+                    </form>                
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

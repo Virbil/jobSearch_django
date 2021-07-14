@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    
+    <title>Signin</title>
+</head>
+
+<body class="text-center">
+
+    {% include 'forgot-pass-modal.html' %}
+
+    <div class="container">
+        <form class="form-signin" action='/log-in' method="POST" autocomplete="off">    
+            {% csrf_token %}
+            <img class="mb-4 p-2" src="{% static 'img/dojo-icon.png' %}" alt="" width="72" height="72">
+            <h1 class="h3 mb-5 font-weight-normal">Please sign in</h1>
+            
+            {% if messages %}
+            <ul class="messages text-danger">    
+                {% for message in messages %}    
+                    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>    
+                {% endfor %}
+            </ul>
+            {% endif %}
+            
+            <label for="inputEmail" class="sr-only">Email address</label>
+            <input type="email" id="email" name="email" class="form-control" placeholder="Email address" required autofocus>
+            <label for="inputPassword" class="sr-only">Password</label>
+            <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
+        </form>
+        <form class="form-signin" action='/register' method="POST">
+            {% csrf_token %}
+            <button class="btn btn-lg btn-secondary btn-block register" type="submit">Register</button>
+        </form>
+        <a class="lead" type="button" id="btnForgotPassword">Forgot your password?</a>
+        <p class="mt-5 mb-3 text-muted">&copy; 2021</p>
+    </div>
+
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#btnForgotPassword').click(function() {
+                $("#forgotPasswordModal").addClass('fade');
+                $('#forgotPasswordModal').modal('show');
+            })
+
+
+            $('#getEmailForm').submit(function(e) {
+                e.preventDefault();
+
+                $.ajax({
+                    url: '/get-email',
+                    method: 'POST',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        console.log(response)
+                        if (response == "Email address not found. Please provide another.") {
+                            // using jQuery
+                            $('#getEmailErrors').html(response)
+                        }
+                        else{
+                            $("#forgotPasswordModal").removeClass('fade');
+                            $('#forgotPasswordModal').modal('hide');
+                            // $(".modal-backdrop").hide();
+
+                            $("#results").html(response);
+
+                            $('#resetPasswordModal').modal('show');
+                        }
+                    }
+                })
+            })
+
+            //resetPasswordForm is getting loaded after initial page load (dynamic html)
+            $('body').on('submit', '#resetPasswordForm', function(e) {
+                e.preventDefault();
+    
+                $.ajax({
+                    url: $(this).attr("action"), // pulls attribute off modal form since we have parameters
+                    method: 'POST',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        // console.log(response)
+                        if (response == "Passwords don't match, please try again") {
+                            // using jQuery
+                            $('#resetPassErrors').html(response)
+                        }
+                        else {
+                            window.location.replace('/customer')
+                        }
+                    }
+                })
+
+                // $(".closeModal").click(function(){
+                //     $("#resetPasswordModal").modal('hide');
+                // });
+                // $("#closeReset").click(function(){
+                //     $("#resetPasswordModal").modal('hide');
+                // });
+            })            
+        })
+    </script>
+</body>
+</html>

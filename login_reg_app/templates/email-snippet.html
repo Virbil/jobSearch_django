@@ -1,0 +1,8 @@
+<div id="email_Msg">
+    {% if found == True %}
+    <p class="error" style="color: red;">Email has been taken.</p>
+    {% endif %}
+    {% if found == False %}
+    <p class="success" style="color: green;"> This email is available!</p>
+    {% endif %}
+</div>

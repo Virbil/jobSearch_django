@@ -1,0 +1,36 @@
+<!-- Reset Password Modal -->
+<!-- Transfered from Enter Email Modal -->
+<div class="modal fade" id="resetPasswordModal" tabindex="-1" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header modal-header-colored">
+                <h3 class="modal-title" style="color: red;">Enter a new password.</h3>
+            </div>
+            <div class="modal-body">
+                <div id="resetPassErrors" style="color: red;"></div>
+                <form class="form-reset-password" id="resetPasswordForm" action="{% url 'reset_password' user_id=user.id %}" method="POST" autocomplete="off">
+                    {% csrf_token %}
+                    <div class="form-group row">
+                        <div class="input-group-prepend col-sm-4">
+                            <span class="input-group-text">Password: </span>
+                        </div>
+                        <div class="col-8">
+                            <input type="password" id="password" name="password" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="input-group-prepend col-sm-4">
+                            <span class="input-group-text">Confirm Password: </span>
+                        </div>
+                        <div class="col-8">
+                            <input type="password" id="confirm_password" name="confirm_password" class="form-control">
+                        </div>
+                    </div>
+                    <h4 class='lead' style="color: red;">Are you sure you want to reset your password?</h4>
+                    <button class='btn btn-primary' type='submit'>Yes</button>
+                    <button class='btn btn-secondary' id="closeReset" type='button' data-dismiss='modal'>Cancel</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
