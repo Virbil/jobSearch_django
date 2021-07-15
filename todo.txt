@@ -1,0 +1,7 @@
+Group Project TODO:
+
+Ideas to include
+01. searching for jobs, 
+02. saving the ones you like to your profile, 
+03. along with saving certain job titles/locations,
+04. daily/weekly email of jobs that you "subscribe" to
