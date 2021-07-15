@@ -8,9 +8,16 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" integrity="undefined" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/lux/bootstrap.min.css" integrity="undefined" crossorigin="anonymous">
 
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
     <title>Job Search</title>
 </head>
 <body class="text-center d-flex flex-column min-vh-100" style="padding-top: 3.5rem;">
+    {% include "top-nav.html" %}
+
+    {% include "side-nav.html" %}
+    
     <div class="container-fluid">
         <main role="main" class="inner cover">
             <div class="jumbotron h2">
@@ -18,5 +25,7 @@
             </div>
         </main>
     </div>
+
+    {% include "footer.html" %}
 </body>
 </html>

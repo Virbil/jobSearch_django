@@ -1,0 +1,48 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/nav.css' %}">
+
+<nav class="navbar navbar-expand-sm navbar-dark fixed-top bg-dark">
+    <a class="navbar-brand" href="/job">360&deg; View</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topNav" aria-controls="topNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="topNav">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active forSmOnly">
+                <a class="nav-link" id="home_flush" href="/job">
+                    <span data-feather="users"></span>
+                    Job Search
+                </a>
+            </li>
+            <li class="nav-item forSmOnly">
+                <a class="nav-link" href="#">
+                    <span data-feather="home"></span>
+                    Job Information 
+                    <span class="sr-only">(current)</span>
+                </a>
+            </li>
+            <li class="nav-item forSmOnly">
+                <a class="nav-link" href="#">
+                    <span data-feather="file"></span>
+                    Apply to Jobs
+                </a>
+            </li>
+            <li class="nav-item forSmOnly">
+                <a class="nav-link" href="#">
+                    <span data-feather="tag"></span>
+                    Job History
+                </a>
+            </li>
+            <li class="nav-item forSmOnly">
+                <a class="nav-link" href="#">
+                    <span data-feather="shopping-cart"></span>
+                    Friends
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/logout">Log Out</a>
+            </li>
+        </ul>
+    </div>
+</nav>
