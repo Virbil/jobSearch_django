@@ -24,6 +24,31 @@
         <main role="main" class="inner cover">
             <div class="jumbotron h2">
                     <h1 class="cover-heading">Welcome, {{ user_info.first_name }} {{ user_info.last_name }}</h1>
+                    <a href="/job/find_jobs">Click this to add jobs from indeed to our database.  We can make this a post or an automated scrape on some interval.</a>
+                    {% for job in jobs %}
+                    <div class="row">
+                        <div class="col text-left">
+                            <h3>{{job.tob_title.title}}</h3>
+                            <p>{{job.company}}</p>
+                            <p>{{job.location}}</p>
+                            <p>{{ job.post_date }}</p>
+                            <a href="{{job.job_url}}">Indeed Link</a>
+                            {% for line in job.job_desc %}
+                            <p>{{line}}</p>
+                            {% endfor %}
+                            <p>*********************************</p>
+                        </div>
+                    </div>
+                    <h3>{{job.tob_title.title}}</h3>
+                    <p>{{job.company}}</p>
+                    <p>{{job.location}}</p>
+                    <p>{{ job.post_date }}</p>
+                    <a href="{{job.job_url}}">Indeed Link</a>
+                    {% for line in job.job_desc %}
+                    <p>{{line}}</p>
+                    {% endfor %}
+                    <p>*********************************</p>
+                    {% endfor %}
             </div>
         </main>
     </div>
