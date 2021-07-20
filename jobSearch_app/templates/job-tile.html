@@ -7,8 +7,41 @@
     <a href="{{job.job_url}}">Indeed Link</a>
     <p>Summary:</p>
     <ul>
-    {% for line in job.summary %}
+        {% for line in job.summary %}
         <li>{{ line }}</li>
-    {% endfor %}
+        {% endfor %}
     </ul>
+    
+    {% if job.likes.all|length > 0 or job.dislikes.all|length > 0 %}
+        <form action="{% url 'reset_job' reset_job_id=job.id %}" method="POST">
+            {% csrf_token %}
+            <input class="btn btn-link text-warning float-right" type="submit" value="Reset">
+        </form>
+    {% endif %}
+
+    {% if job.dislikes.all|length > 0 %}
+        {% if user_info in job.dislikes.all %}
+            <div class="col-md-12">
+                <p class="mb-3 float-right lead"><em>Disliked job!</em></p>
+            </div>
+        {% endif %}
+    {% else %}
+        <form action="{% url 'dislike_job' dislike_job_id=job.id %}" method="POST">
+            {% csrf_token %}
+            <input class="btn btn-link text-danger float-right" type="submit" value="Dislike">
+        </form>
+    {% endif %}
+
+    {% if job.likes.all|length > 0 %}
+        {% if user_info in job.likes.all %}
+            <div class="col-md-12">
+                <p class="mb-3 float-right lead"><em>Liked job!</em></p>
+            </div>
+        {% endif %}
+    {% else %}
+        <form action="{% url 'like_job' like_job_id=job.id %}" method="POST">
+            {% csrf_token %}
+            <input class="btn btn-link text-success float-right" type="submit" value="Like">
+        </form>
+    {% endif %}
 </div>

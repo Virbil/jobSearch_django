@@ -28,6 +28,8 @@
                 <a class="btn btn-link text-primary" href="/job/find_jobs">Click this to add jobs from indeed to our database.  We can make this a post or an automated scrape on some interval.</a>
             </div>
             {% for job in jobs %}
+            <!-- {% if job.dislikes.all|length > 0 %}
+            {% else %} -->
             {% if forloop.counter0|divisibleby:2 %}
             <div class="row d-flex justify-content-evenly m-2">
                 {% include 'job-tile.html' %}
@@ -35,6 +37,7 @@
                 {% include 'job-tile.html' %}
             </div>
             {% endif %}
+            <!-- {% endif %} -->
             
             {% endfor %}
         </main>
