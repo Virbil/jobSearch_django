@@ -134,17 +134,20 @@ def parse_post_date(post_date, today):
 def get_min_max_salary(salary):
     sal = salary.split("-")
     salaries = []
-    if sal:
-        for s in sal:
-            val = ''
-            for digit in s:
-                if digit.isdigit():
-                    val += digit
-            salaries.append(val)
-        if len(salaries) > 1:
-            return int(salaries[0]), int(salaries[1])
-        else:
-            return None, int(salaries[0])         
+    for s in sal:
+        val = ''
+        for digit in s:
+            if digit.isdigit():
+                val += digit
+        salaries.append(val)
+    if len(salaries) > 1:
+        return int(salaries[0]), int(salaries[1])
+    else:
+        try:
+            value = int(salaries[0])
+        except ValueError:
+            value = None
+        return None, value        
     return None
 
 

@@ -28,7 +28,7 @@ class Location(models.Model):
         return f"{self.city}, {self.state.abbr}"
 
 class Position(models.Model):
-    title = models.CharField(max_length=45)
+    title = models.CharField(max_length=45, null=True)
     created_at = models.DateField(auto_now=True)
     updated_at = models.DateField(auto_now_add=True)
     pos_saves = models.ManyToManyField(User, related_name="user_pos_saves")
@@ -50,8 +50,9 @@ class Job(models.Model):
     location = models.CharField(max_length=45)
     post_date = models.DateField(null=True)
     salary_min = models.IntegerField(blank=True, default=None, null=True)
-    salary_max = models.IntegerField(blank=True, default=None)
+    salary_max = models.IntegerField(blank=True, default=None, null=True)
     job_url = models.CharField(max_length=255)
+    summary = models.CharField(max_length=255, null=True)
     job_desc = models.TextField()
     qualifications = models.ManyToManyField(Qualification, related_name="qual_jobs")
     likes = models.ManyToManyField(User, related_name="job_likes")

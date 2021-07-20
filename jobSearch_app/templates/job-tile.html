@@ -1,0 +1,14 @@
+
+<div class="col-md-5 m-2 p-2 text-left border border-secondary shadow ">
+    <h3><a href="#">{{job.job_title.title}}</a></h3>
+    <p>Company: {{job.company}}</p>
+    <p>Location: {{job.location}}</p>
+    <p>Posted on: {{ job.post_date }}</p>
+    <a href="{{job.job_url}}">Indeed Link</a>
+    <p>Summary:</p>
+    <ul>
+    {% for line in job.summary %}
+        <li>{{ line }}</li>
+    {% endfor %}
+    </ul>
+</div>
