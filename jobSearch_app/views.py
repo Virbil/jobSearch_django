@@ -39,3 +39,32 @@ def find_jobs(request):
             pos = pos[0]
         Job.objects.create(job_title=pos, company=job['Company'], location=job['Location'], salary_min=job['salary_min'], salary_max=job['salary_max'], job_url=job['JobUrl'], job_desc=job['JobDesc'], summary=job['Summary'])
     return redirect("/job")
+
+@validate_request
+def like_job(request, logged_user, like_job_id):
+    if request.method == "POST":
+        job_to_like = Job.objects.get(id=like_job_id)
+
+        job_to_like.likes.add(logged_user)
+    return redirect("/job")
+
+@validate_request
+def dislike_job(request, logged_user, dislike_job_id):
+    if request.method == "POST":
+        job_to_dislike = Job.objects.get(id=dislike_job_id)
+        job_to_dislike.dislikes.add(logged_user)
+        
+        if job_to_dislike.likes.all:
+            job_to_dislike.likes.remove(logged_user)
+        
+    return redirect("/job")
+
+@validate_request
+def reset_job(request, logged_user, reset_job_id):
+    if request.method == "POST":
+        job_to_reset = Job.objects.get(id=reset_job_id)
+        
+        job_to_reset.likes.remove(logged_user)
+
+        job_to_reset.dislikes.remove(logged_user)
+    return redirect("/job")
