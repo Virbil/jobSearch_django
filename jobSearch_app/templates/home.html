@@ -9,6 +9,10 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" integrity="undefined" crossorigin="anonymous">
     <!-- Bootstrap Bootswatch Template -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/lux/bootstrap.min.css" integrity="undefined" crossorigin="anonymous">
+    <!-- JQuery Load stylesheet and scripts -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
@@ -24,12 +28,10 @@
     <div class="container-fluid">
         <main role="main" class="inner cover">
             <div class="jumbotron h2">
-                <h1 class="cover-heading">Welcome, {{ user_info.first_name }} {{ user_info.last_name }}</h1>
+                <h1 class="cover-heading">Welcome, {{ user.first_name }} {{ user.last_name }}</h1>
                 <a class="btn btn-link text-primary" href="/job/find_jobs">Click this to add jobs from indeed to our database.  We can make this a post or an automated scrape on some interval.</a>
             </div>
             {% for job in jobs %}
-            <!-- {% if job.dislikes.all|length > 0 %}
-            {% else %} -->
             {% if forloop.counter0|divisibleby:2 %}
             <div class="row d-flex justify-content-evenly m-2">
                 {% include 'job-tile.html' %}
@@ -37,8 +39,6 @@
                 {% include 'job-tile.html' %}
             </div>
             {% endif %}
-            <!-- {% endif %} -->
-            
             {% endfor %}
         </main>
     </div>

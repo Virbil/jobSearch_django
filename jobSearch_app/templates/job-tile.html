@@ -11,20 +11,26 @@
         <li>{{ line }}</li>
         {% endfor %}
     </ul>
+    <div class="row">
+        <div class="col text-right m-2">
+            {% if job in user.job_likes.all %}
+            <a class="likebutton text-warning pr-1" name="Reset" style="cursor: pointer;" id="like{{job.id}}"  data-catid="{{job.id}}">Reset</a><span>|</span>
+            {% else %}
+            <a class="likebutton text-success pr-1" name="Like" style="cursor: pointer;" id="like{{job.id}}"  data-catid="{{job.id}}">Like</a><span>|</span>
+            {% endif %}
+            <a class="dislikebutton text-danger" name="Dislike" style="cursor: pointer;" id="dislike{{job.id}}" data-catid="{{job.id}}">Dislike</a>
+        </div>
+    </div>
     
-    {% if job.likes.all|length > 0 or job.dislikes.all|length > 0 %}
+    <!-- {% if job in user.job_likes.all %}
         <form action="{% url 'reset_job' reset_job_id=job.id %}" method="POST">
             {% csrf_token %}
             <input class="btn btn-link text-warning float-right" type="submit" value="Reset">
         </form>
     {% endif %}
 
-    {% if job.dislikes.all|length > 0 %}
-        {% if user_info in job.dislikes.all %}
-            <div class="col-md-12">
-                <p class="mb-3 float-right lead"><em>Disliked job!</em></p>
-            </div>
-        {% endif %}
+    {% if job in user.job_dislikes.all %}
+        <p class="mb-3 float-right lead"><em>Disliked job!</em></p>
     {% else %}
         <form action="{% url 'dislike_job' dislike_job_id=job.id %}" method="POST">
             {% csrf_token %}
@@ -43,5 +49,5 @@
             {% csrf_token %}
             <input class="btn btn-link text-success float-right" type="submit" value="Like">
         </form>
-    {% endif %}
+    {% endif %} -->
 </div>

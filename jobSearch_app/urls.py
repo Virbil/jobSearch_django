@@ -7,4 +7,6 @@ urlpatterns = [
     path('like_job/<int:like_job_id>', views.like_job, name="like_job"),
     path('dislike_job/<int:dislike_job_id>', views.dislike_job, name="dislike_job"),
     path('reset_job/<int:reset_job_id>', views.reset_job, name="reset_job"),
+    path('like', views.like, name="like"),
+    path('dislike', views.dislike, name="dislike"),
 ]

@@ -1,4 +1,5 @@
 from django.contrib.messages.api import info
+from django.http.response import JsonResponse
 from jobSearch_app.decorators import validate_request
 from django.contrib import messages
 from jobSearch_app.models import *
@@ -12,13 +13,13 @@ import ast
 
 @validate_request
 def home(request, logged_user):
-    jobs = Job.objects.all()
+    jobs = Job.objects.exclude(dislikes=logged_user)
     for j in jobs:
         j.job_desc = ast.literal_eval(j.job_desc)
         j.summary = j.summary.split(";")
         j.summary.pop()
     context = {
-        "user_info": logged_user,
+        "user": logged_user,
         'jobs': jobs,
     }
     return render(request, "home.html", context)
@@ -43,19 +44,21 @@ def find_jobs(request):
 @validate_request
 def like_job(request, logged_user, like_job_id):
     if request.method == "POST":
+        logged_user = User.objects.get(id=logged_user)
         job_to_like = Job.objects.get(id=like_job_id)
-
-        job_to_like.likes.add(logged_user)
+        logged_user.job_likes.add(job_to_like)
+        if job_to_like in logged_user.job_dislikes.all():
+            logged_user.job_dislikes.remove(logged_user)
     return redirect("/job")
 
 @validate_request
 def dislike_job(request, logged_user, dislike_job_id):
     if request.method == "POST":
+        logged_user = User.objects.get(id=logged_user)
         job_to_dislike = Job.objects.get(id=dislike_job_id)
-        job_to_dislike.dislikes.add(logged_user)
-        
-        if job_to_dislike.likes.all:
-            job_to_dislike.likes.remove(logged_user)
+        logged_user.dislikes.add(job_to_dislike)
+        if job_to_dislike in logged_user.job_likes.all():
+            logged_user.job_likes.remove(logged_user)
         
     return redirect("/job")
 
@@ -63,8 +66,41 @@ def dislike_job(request, logged_user, dislike_job_id):
 def reset_job(request, logged_user, reset_job_id):
     if request.method == "POST":
         job_to_reset = Job.objects.get(id=reset_job_id)
-        
-        job_to_reset.likes.remove(logged_user)
-
-        job_to_reset.dislikes.remove(logged_user)
+        logged_user.job_likes.remove(job_to_reset)
+        logged_user.job_dislikes.remove(job_to_reset)
     return redirect("/job")
+
+@validate_request
+def like(request, user):
+    if request.method == "GET":
+        job = Job.objects.filter(id=request.GET['job_id'])
+        if job:
+            if request.GET['status'] == 'Like':
+                user.job_likes.add(job[0])
+                user.job_dislikes.remove(job[0])
+                data = {'status': "Reset"}
+            else:
+                user.job_likes.remove(job[0])
+                user.job_dislikes.remove(job[0])
+                data = {'status': "Like"}
+            return JsonResponse(data)
+    return redirect("/job")
+
+@validate_request
+def dislike(request, user):
+    if request.method == "GET":
+        job = Job.objects.filter(id=request.GET['job_id'])
+        if job:
+            if request.GET['status'] == 'Dislike':
+                user.job_dislikes.add(job[0])
+                user.job_likes.remove(job[0])
+                data = {'status': "Reset"}
+            else:
+                user.job_likes.remove(job[0])
+                user.job_dislikes.remove(job[0])
+                data = {'status': "Dislike"}
+            return JsonResponse(data)
+    return redirect("/job")
+
+
+
