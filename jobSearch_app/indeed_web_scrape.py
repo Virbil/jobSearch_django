@@ -41,7 +41,7 @@ def get_record(card):
         job_title = ""
     try:
         company = card.find('span', 'companyName').text.strip()
-    except AttributeError:
+    except AttributeError: 
         company = ""
     try:
         job_location = card.find('div', 'companyLocation').text
@@ -75,15 +75,16 @@ def get_jobs(position, location):
     records = []
     url, headers = get_url_and_headers(position, location)
     while True:
-        
+        print(url)
         response = requests.get(url)
         soup = BeautifulSoup(response.text, 'html.parser')
+        print(soup.text)
         cards = soup.find_all('div', 'mosaic-provider-jobcards')
         for card in cards:
             
             record = get_record(card)
             records.append(record)
-            description = get_full_job_desc(record[-1])
+            title, description = get_full_job_desc(record[-1])
             record.append(list(description))
         try:
             url = 'https://www.indeed.com' + soup.find('a', {'aria-label': 'Next'}).get('href')
@@ -99,8 +100,8 @@ def get_jobs(position, location):
             records_dict[i][c] = rec[j]
         records_dict[i]['PostDate'] = parse_post_date(records_dict[i]['PostDate'], records_dict[i]['ExtractDate'])
         records_dict[i]['salary_min'], records_dict[i]['salary_max'] = get_min_max_salary(records_dict[i]['Salary'])
-        print(records_dict)
-        
+        if records_dict[i]['JobTitle'] == "" and title:
+            records_dict[i]['JobTitle'] = title
     return records_dict
 
 
@@ -110,12 +111,18 @@ def get_full_job_desc(url):
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
     desc_div = soup.find('div', {'id': 'jobDescriptionText'})
+    title = soup.find('h1', {'class': 'jobsearch-JobInfoHeader-title'})
+    if title:
+        title = title.text
+    else:
+        title = None
     job_desc = ""
     if desc_div:
         for br in desc_div.find_all("br"):
             br.replace_with("\n")
         job_desc = desc_div.text.split("\n")
-    return job_desc
+    
+    return title, job_desc
 
 def parse_post_date(post_date, today):
     days_ago = ""
@@ -129,6 +136,7 @@ def parse_post_date(post_date, today):
     today = datetime.strptime(today, '%Y-%m-%d')
     days = timedelta(days=days_ago)
     date_posted = today - days
+    print(date_posted)
     return date_posted.strftime('%Y-%m-%d')
 
 def get_min_max_salary(salary):
