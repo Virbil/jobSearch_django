@@ -2,7 +2,7 @@ $(document).ready(function(){
     $(".likebutton").click(function(e){
         e.preventDefault();
         var id = $(this).attr("data-catid");
-        var status = $(this).text();
+        var status = $(this).attr('name');
         $.ajax({
             type: "GET",
             url: "/job/like",
@@ -11,15 +11,14 @@ $(document).ready(function(){
                 status: status,
             },
             success: function(data){
+                $("#like"+id).attr('name', data['status']);
                 if (data['status'] == "Like"){
-                    $("#like"+id).removeClass('text-warning');
-                    $("#like"+id).addClass('text-success');
-                    $("#like"+id).text(data['status']);
+                    $("#like"+id).html("<i class='bi bi-hand-thumbs-up'></i>")
                 }
                 else{
-                    $("#like"+id).removeClass('text-success');
-                    $("#like"+id).addClass('text-warning');
-                    $("#like"+id).text(data['status']);
+                    $("#like"+id).html("<i class='bi bi-hand-thumbs-up-fill'></i>");
+                    $("#dislike"+id).html("<i class='bi bi-hand-thumbs-down'></i>");
+                    $("#dislike"+id).attr('name', 'Dislike');
                 }
             }
         })
@@ -38,15 +37,14 @@ $(document).ready(function(){
                 status: status,
             },
             success: function(data){
+                $("#dislike"+id).attr('name', data['status']);
                 if (data['status'] == "Dislike"){
-                    $("#dislike"+id).removeClass('text-warning');
-                    $("#dislike"+id).addClass('text-danger');
-                    $("#dislike"+id).text(data['status']);
+                    $("#dislike"+id).html("<i class='bi bi-hand-thumbs-down'></i>");
                 }
                 else{
-                    $("#dislike"+id).removeClass('text-danger');
-                    $("#dislike"+id).addClass('text-warning');
-                    $("#dislike"+id).text(data['status']);
+                    $("#dislike"+id).html("<i class='bi bi-hand-thumbs-down-fill'></i>");
+                    $("#like"+id).html("<i class='bi bi-hand-thumbs-up'></i>");
+                    $("#like"+id).attr('name', 'Like');
                 }
             }
         })

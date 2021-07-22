@@ -28,7 +28,7 @@ def find_jobs(request):
     positions = Position.objects.all()
     locations = Location.objects.all()
     position = positions[2].__str__()
-    location = locations[3].__str__()
+    location = locations[0].__str__()
     print(position, location)
     
     job_dict = get_jobs(position=position, location=location)
@@ -38,7 +38,7 @@ def find_jobs(request):
             pos = Position.objects.create(title=job["JobTitle"])
         else:
             pos = pos[0]
-        Job.objects.create(job_title=pos, company=job['Company'], location=job['Location'], salary_min=job['salary_min'], salary_max=job['salary_max'], job_url=job['JobUrl'], job_desc=job['JobDesc'], summary=job['Summary'])
+        Job.objects.create(job_title=pos, company=job['Company'], location=job['Location'], salary_min=job['salary_min'], salary_max=job['salary_max'], job_url=job['JobUrl'], job_desc=job['JobDesc'], summary=job['Summary'], post_date=job['PostDate'])
     return redirect("/job")
 
 @validate_request
