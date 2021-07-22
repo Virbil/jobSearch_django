@@ -6,42 +6,37 @@
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topNav" aria-controls="topNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-
-    <div class="collapse navbar-collapse" id="topNav">
+    <div class="dropdown-toggle navbar-collapse justify-content-end" id="topNav">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active forSmOnly">
-                <a class="nav-link" id="home_flush" href="/job">
-                    <span data-feather="briefcase"></span>
-                    Job Search
-                </a>
+            <li class="nav-item">
+                <form class="d-flex">
+                    <input class="form-control" type="text" placeholder="Search Jobs">
+                    <button class="btn btn-info btn-sm" type="submit">Go</button>
+                </form>
             </li>
-            <li class="nav-item forSmOnly">
-                <a class="nav-link" href="#">
+            <li class="nav-item">
+                <a class="nav-link" href="/job">
                     <span data-feather="home"></span>
-                    Job Information 
+                    Home
                     <span class="sr-only">(current)</span>
                 </a>
             </li>
-            <li class="nav-item forSmOnly">
-                <a class="nav-link" href="#">
-                    <span data-feather="file-text"></span>
-                    Apply to Jobs
-                </a>
-            </li>
-            <li class="nav-item forSmOnly">
-                <a class="nav-link" href="#">
-                    <span data-feather="calendar"></span>
-                    Job History
-                </a>
-            </li>
-            <li class="nav-item forSmOnly">
-                <a class="nav-link" href="#">
-                    <span data-feather="users"></span>
-                    Friends
+            <li class="nav-item">
+                <a class="nav-link" href="/job/profile/{{user.id}}">
+                    <span data-feather="user"></span>
+                    Profile
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/logout">Log Out</a>
+                <a class="nav-link" href="/job/calendar/{{user.id}}">
+                    <span data-feather="calendar"></span>
+                    Calendar
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/logout">
+                    <span data-feather="log-out"></span>
+                    Log Out</a>
             </li>
         </ul>
     </div>

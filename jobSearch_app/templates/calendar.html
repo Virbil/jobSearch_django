@@ -27,23 +27,18 @@
     <header>
         {% include "top-nav.html" %}
     </header>
-
+    <!-- {% include "side-nav.html" %} -->
     
-    <div class="container-fluid">
+    <div class="container">
         <main role="main" class="inner cover">
-            <div class="jumbotron h2">
-                <h1 class="cover-heading">Welcome, {{ user.first_name }} {{ user.last_name }}</h1>
-                <a class="btn btn-link text-primary" href="/job/find_jobs">Click this to add jobs from indeed to our database.  We can make this a post or an automated scrape on some interval.</a>
+            <div class="row">
+                <div class=" text-secondary col-lg-12">
+                    <h2>
+                        CALENDAR PAGE
+                    </h2>
+                </div>
             </div>
-            {% for job in jobs %}
-            {% if forloop.counter0|divisibleby:2 %}
-            <div class="row d-flex justify-content-evenly m-2">
-                {% include 'job-tile.html' %}
-            {% else %}
-                {% include 'job-tile.html' %}
-            </div>
-            {% endif %}
-            {% endfor %}
+
         </main>
     </div>
 
