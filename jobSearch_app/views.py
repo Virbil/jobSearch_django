@@ -103,4 +103,52 @@ def dislike(request, user):
     return redirect("/job")
 
 
+#Views added by Archer
+
+def job_info(request, job_id):
+    if 'userid' in request.session:
+        context = {
+            'this_job': job_id,
+        }
+        return render(request, 'job-info.html', context)
+    else: 
+        return redirect('/')
+
+def calendar(request, user_id):
+    if 'userid' in request.session:
+        context = {
+            "user": User.objects.get(id=user_id)
+        }
+        return render(request, 'calendar.html', context)
+    else: 
+        return redirect('/')
+
+def profile(request, user_id):
+    if 'userid' in request.session:
+
+        context = {
+            "user": User.objects.get(id=user_id),
+        }
+        return render(request, 'profile.html', context)
+    else: 
+        return redirect('/')
+
+def interview_helper(request, user_id):
+    if 'userid' in request.session:
+        context = {
+            "user": user_id,
+        }
+        return render(request, 'interview-helper.html', context)
+    else: 
+        return redirect('/')
+
+def create_job(request, user_id):
+    if 'userid' in request.session:
+        context = {
+            "user": User.objects.get(id=user_id),
+        }
+        return render(request, 'create-job.html', context)
+    else: 
+        return redirect('/')
+
 

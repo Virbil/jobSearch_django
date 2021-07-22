@@ -24,26 +24,33 @@
     <title>Job Search Assistant</title>
 </head>
 <body class="text-center d-flex flex-column min-vh-100" style="padding-top: 3.5rem;">
-    <header>
-        {% include "top-nav.html" %}
-    </header>
+    {% include "top-nav.html" %}
 
     
-    <div class="container-fluid">
+    <div class="container">
         <main role="main" class="inner cover">
-            <div class="jumbotron h2">
-                <h1 class="cover-heading">Welcome, {{ user.first_name }} {{ user.last_name }}</h1>
-                <a class="btn btn-link text-primary" href="/job/find_jobs">Click this to add jobs from indeed to our database.  We can make this a post or an automated scrape on some interval.</a>
+            <div class="row justify-content-lg-between">
+                <div class="col-12">
+                    <h1>PROFILE PAGE</h1>
+                </div>
+                <div class="col-md-6">
+                    <h4>
+                        {{user.first_name}} {{user.last_name}}
+                    </h4>
+                </div>
+                <div class="col-md-6">
+                    <a href="/interview_helper/{{this_user.id}}">
+                        <span data-feather="briefcase"></span>
+                        Interview Helper | 
+                        <span class="sr-only">(current)</span>
+                    <a href="/job/create">
+                        <span data-feather="file-plus"></span>
+                        Post a Job
+                        <span class="sr-only">(current)</span>
+                    </a>
+        </div>
             </div>
-            {% for job in jobs %}
-            {% if forloop.counter0|divisibleby:2 %}
-            <div class="row d-flex justify-content-evenly m-2">
-                {% include 'job-tile.html' %}
-            {% else %}
-                {% include 'job-tile.html' %}
-            </div>
-            {% endif %}
-            {% endfor %}
+
         </main>
     </div>
 
