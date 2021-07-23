@@ -10,8 +10,8 @@ urlpatterns = [
     path('like', views.like, name="like"),
     path('dislike', views.dislike, name="dislike"),
     # new paths made by Archer
-    path('job/<int:job_id>', views.job_info),
-    path('job/create', views.create_job),
+    path('<int:job_id>', views.job_info),
+    path('create/<int:user_id>', views.create_job),
     path('profile/<int:user_id>', views.profile),
     path('calendar/<int:user_id>', views.calendar),
     path('interview_helper/<int:user_id>', views.interview_helper),

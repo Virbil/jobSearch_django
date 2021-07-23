@@ -23,13 +23,13 @@
 
     <title>Job Search Assistant</title>
 </head>
-<body class="text-center d-flex flex-column min-vh-100" style="padding-top: 3.5rem;">
+<header class="mb-5">
     {% include "top-nav.html" %}
-
-    
+</header>
+<body class="text-center d-flex flex-column min-vh-100" style="padding-top: 3.5rem;">
     <div class="container">
         <main role="main" class="inner cover">
-            <div class="row justify-content-lg-between">
+            <div class="row justify-content-lg-between mt-5">
                 <div class="col-12">
                     <h1>PROFILE PAGE</h1>
                 </div>
@@ -39,11 +39,11 @@
                     </h4>
                 </div>
                 <div class="col-md-6">
-                    <a href="/interview_helper/{{this_user.id}}">
+                    <a href="/job/interview_helper/{{user.id}}">
                         <span data-feather="briefcase"></span>
                         Interview Helper | 
                         <span class="sr-only">(current)</span>
-                    <a href="/job/create">
+                    <a href="/job/create/{{user.id}}">
                         <span data-feather="file-plus"></span>
                         Post a Job
                         <span class="sr-only">(current)</span>

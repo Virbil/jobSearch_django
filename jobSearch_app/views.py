@@ -136,7 +136,7 @@ def profile(request, user_id):
 def interview_helper(request, user_id):
     if 'userid' in request.session:
         context = {
-            "user": user_id,
+            "user": User.objects.get(id=user_id),
         }
         return render(request, 'interview-helper.html', context)
     else: 
