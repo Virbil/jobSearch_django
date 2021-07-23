@@ -2,7 +2,7 @@
 <div class="col-md-5 m-2 p-2 text-left border border-secondary shadow ">
     <div class="row">
         <div class="col-sm-9">
-            <h3><a href="#">{{job.job_title.title}}</a></h3>
+            <h3><a href="/job/{{job.id}}">{{job.job_title.title}}</a></h3>
         </div>
         <div class="col-sm-3 text-right">
             {% if job in user.job_likes.all %}
