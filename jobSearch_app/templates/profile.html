@@ -32,7 +32,6 @@
             <div class="row justify-content-lg-between mt-5">
                 <div class="col-12">
                     <h1>PROFILE PAGE</h1>
-                    <p>LAURA TEST</p>
                 </div>
                 <div class="col-md-6">
                     <h4>
@@ -42,14 +41,26 @@
                 <div class="col-md-6">
                     <a href="/job/interview_helper/{{user.id}}">
                         <span data-feather="briefcase"></span>
-                        Interview Helper | 
+                        Interview Helper |
                         <span class="sr-only">(current)</span>
+                    </a>
                     <a href="/job/create/{{user.id}}">
                         <span data-feather="file-plus"></span>
                         Post a Job
                         <span class="sr-only">(current)</span>
                     </a>
-        </div>
+                </div>
+            </div>
+
+            <div class="row justify-content-center m-5">
+                <h1>Jobs liked</h1>
+                <div class="col-4">
+                    <ul>
+                        {% for job in user.job_likes.all %}
+                            <li>{{ job.job_title.title }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
 
         </main>

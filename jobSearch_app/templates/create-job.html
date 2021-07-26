@@ -33,9 +33,103 @@
                 <div class="col-12">
                     <h1>POST JOB PAGE</h1>
                 </div>
-                </div>
             </div>
 
+            <form action="#" method="POST" autocomplete="off">
+                {% csrf_token %}
+                <div class="form-row">
+                    <div class="col-sm-2">
+                        <label class="input-group-text">Job Title: </label>
+                    </div>
+                    <div class="col-sm-10 mb-5">
+                        <input type="text" id="job_title" name="job_title" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-sm-2">
+                        <label class="input-group-text">Location: </label>
+                    </div>
+                    <div class="col-sm-8 mb-5">
+                        <input type="text" id="city" name="city" class="form-control" placeholder="City">
+                    </div>
+                    <div class="col-sm-2 mb-5">
+                        <input type="text" id="state" name="state" class="form-control" placeholder="State">
+                    </div>
+                </div>
+
+                <div class="form-row justify-content-between">
+                    <div class="col">
+                        <div class="form-row">
+                            <div class="col-4 mb-5">
+                                <label class="input-group-text">Number Of Hires: </label>
+                            </div>                
+                            <div class="col-8">
+                                <input type="text" id="hire_qty" name="hire_qty" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col">
+                        <div class="form-row">
+                            <div class="col-6">
+                                <label class="input-group-text">Type of Employment: </label>
+                            </div>                
+                            <div class="col-6">
+                                <select class="form-control" name="employment">
+                                    <option value="1">Full Time</option>
+                                    <option value="2">Part Time</option>
+                                    <option value="3">Contract</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="col-sm-2 mb-5">
+                        <label class="input-group-text">Salary Range: </label>
+                    </div>                
+                    <div class="col-sm-5">
+                        <input type="text" id="min" name="min" class="form-control" placeholder="Min ">
+                    </div>
+                    <div class="col-sm-5">
+                        <input type="text" id="max" name="max" class="form-control" placeholder="Max">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="col-sm-2 mb-5">
+                        <label class="input-group-text">Description: </label>
+                    </div>                
+                    <div class="col-sm-10">
+                        <textarea class="form-control form-control-lg" aria-label="Full Job Description: " name="description">Full Job Description:</textarea>
+                    </div>
+                </div>
+
+                <h2 class="m-3">Qualifications</h2>
+                <div class="form-row">
+                    <div class="col">
+                        <div class="col-4 mb-1">
+                            <label class="input-group-text">Required: </label>
+                        </div>                
+                        <div class="col-8">
+                            <textarea class="form-control form-control-lg" aria-label="Required: " name="required">4 Years of Python</textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="col">
+                        <div class="col-4 mb-1 justify-content-center">
+                            <label class="input-group-text">Preferred: </label>
+                        </div>                
+                        <div class="col-8">
+                            <textarea class="form-control form-control-lg" aria-label="Preferred: " name="preferred">6 Years of Python</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary m-3">Post Job</button>
+            </form>
         </main>
     </div>
 
