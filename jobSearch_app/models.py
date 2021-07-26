@@ -64,8 +64,8 @@ class Job(models.Model):
         return f"{self.job_title}, {self.company}"
 
 class Note(models.Model):
-    creator = models.ForeignKey(User, on_delete=models.CASCADE)
-    job_id = models.ForeignKey(Job, on_delete=models.CASCADE, default=None)
+    creator = models.ForeignKey(User, related_name="notes", on_delete=models.CASCADE)
+    job_id = models.ForeignKey(Job, related_name="notes", on_delete=models.CASCADE, default=None)
     desc = models.TextField()
     created_at = models.DateField(auto_now=True)
     updated_at = models.DateField(auto_now_add=True)

@@ -85,8 +85,12 @@ img {
 
 #desc-card {
     height: 200px;
-    overflow-y: scroll;
+    overflow-y: auto;
+}
 
+#note-card {
+    height: 125px;
+    overflow-y: auto;
 }
 
 .job-title {
