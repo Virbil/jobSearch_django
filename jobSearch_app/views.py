@@ -107,8 +107,13 @@ def dislike(request, user):
 
 def job_info(request, job_id):
     if 'userid' in request.session:
+        this_job = Job.objects.get(id=job_id)
+        this_job.job_desc = ast.literal_eval(this_job.job_desc)
+        this_job.summary = this_job.summary.split(";")
+        this_job.summary.pop()
+        print(this_job.job_desc)
         context = {
-            'this_job': job_id,
+            'this_job': this_job,
         }
         return render(request, 'job-info.html', context)
     else: 

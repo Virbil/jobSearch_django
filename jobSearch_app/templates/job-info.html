@@ -29,9 +29,55 @@
 <body class="text-center d-flex flex-column min-vh-100" style="padding-top: 3.5rem;">
     <div class="container">
         <main role="main" class="inner cover">
-            <div class="row justify-content-lg-between mt-5">
-                <div class="col-12">
-                    <h1>JOB INFO PAGE</h1>
+            <div class="row  mt-3">
+                <div class=" col-12">
+                    <div class="col-lg-12 d-flex justify-content-between">
+                        <div class="job-title col-lg-9">
+                            <h1 class="text-left text-info">{{this_job.job_title.title}}</h1>
+                        </div>
+                        <div class="col-lg-3 text-right">
+                            {% if job in user.job_likes.all %}
+                            <a class="likebutton  pr-1" name="Reset" style="cursor: pointer;" id="like{{job.id}}"  data-catid="{{job.id}}"><i class="bi bi-hand-thumbs-up-fill"></i></a><span>|</span>
+                            {% else %}
+                            <a class="likebutton  pr-1" name="Like" style="cursor: pointer;" id="like{{job.id}}"  data-catid="{{job.id}}"><i class="bi bi-hand-thumbs-up"></i></a><span>|</span>
+                            {% endif %}
+                            <a class="dislikebutton" name="Dislike" style="cursor: pointer;" id="dislike{{job.id}}" data-catid="{{job.id}}"><i class="bi bi-hand-thumbs-down"></i></a>
+                        </div>
+                    </div>
+                    <div class= "col-lg-12 text-left  mt-2">
+                        <h6>{{this_job.location}}</h6>
+                    </div>
+                    <div class= "col-lg-12 text-left mt-4">
+                        <h3>{{this_job.company}}</h3>
+                    </div>
+                    <div id="desc-card" class="col-md-12 mt-4 p-3 text-left border border-secondary shadow">
+                        <h5 class="mb-2">Job Details:</h5>
+                        <h6 class="mb-2"> Posted: {{this_job.post_date|date}} </h6>
+                        <div class="row">
+                            <div class="col">
+                                {% if this_job.salary_max %}
+                                <h6 class="text-secondary">Salary: {% if this_job.salary_min %}${{ this_job.salary_min}}-{% endif %}${{ this_job.salary_max }}</h6>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <a class="text-info mb-4" href="{{this_job.job_url}}">Indeed Link</a>
+                        <p>Summary:</p>
+                        <ul>
+                            {% for line in this_job.summary %}
+                            <li>{{ line }}</li>
+                            {% endfor %}
+                        </ul>
+                        <p>Description:</p>
+                        {%for line in this_job.job_desc%}
+                        <p>{{line}}</p>
+                        {%endfor%}
+                        <p>Qualifications:</p>
+                        <ul>
+                            {% for line in this_job.qualifications.all %}
+                            <li>{{ line.name }}: {{ line.duration }} ({{ line.required }}) </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
                 </div>
             </div>
 
