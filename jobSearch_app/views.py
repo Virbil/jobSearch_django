@@ -137,7 +137,7 @@ def interview_helper_info(request, user_id, info_provided):
                     creator = user,
                     elevator_pitch = request.POST['elevator-pitch']
                 )
-                return redirect(f'interview_helper/{user.id}')
+                return redirect(f'/job/interview_helper/{user.id}')
             
             if info_provided == 'str_weak':
                 strengths = Strength_Weakness.objects.create(
@@ -163,7 +163,7 @@ def interview_helper_info(request, user_id, info_provided):
                     general = request.POST['general']
                 )
 
-            return redirect(f'interview_helper/{user.id}')
+            return redirect(f'/job/interview_helper/{user.id}')
 
     else:
         return redirect('/')
