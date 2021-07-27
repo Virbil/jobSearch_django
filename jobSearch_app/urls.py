@@ -17,4 +17,6 @@ urlpatterns = [
     path('profile/<int:user_id>', views.profile),
     path('calendar/<int:user_id>', views.calendar),
     path('interview_helper/<int:user_id>', views.interview_helper),
+    # new path for interview helper using AJAX
+    path('interview_helper/<int:user_id>/<str:info_provided>', views.interview_helper_info),
 ]

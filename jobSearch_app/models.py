@@ -73,8 +73,33 @@ class Note(models.Model):
     def __str__(self):
         return f"Note by: {self.creator.first_name} {self.creator.last_name} for Job: {self.job_id}"
     
+class ElevatorPitch(models.Model):
+    creator = models.ForeignKey(User, on_delete=models.CASCADE)
+    # future/stretch goals to make all fields dynamic (user can add/remove)
+    elevator_pitch = models.TextField()
+    created_at = models.DateField(auto_now=True)
+    updated_at = models.DateField(auto_now_add=True)
 
+class Strength_Weakness(models.Model):
+    creator = models.ForeignKey(User, on_delete=models.CASCADE)
+    str_weak = models.TextField()
+    created_at = models.DateField(auto_now=True)
+    updated_at = models.DateField(auto_now_add=True)
 
-
-
-
+class Accomplishments(models.Model):
+    creator = models.ForeignKey(User, on_delete=models.CASCADE)
+    accomplishments = models.TextField()
+    created_at = models.DateField(auto_now=True)
+    updated_at = models.DateField(auto_now_add=True)
+    
+class CommonQA(models.Model):
+    creator = models.ForeignKey(User, on_delete=models.CASCADE)
+    common_qa = models.TextField()
+    created_at = models.DateField(auto_now=True)
+    updated_at = models.DateField(auto_now_add=True)
+    
+class General(models.Model):
+    creator = models.ForeignKey(User, on_delete=models.CASCADE)
+    general = models.TextField()
+    created_at = models.DateField(auto_now=True)
+    updated_at = models.DateField(auto_now_add=True)

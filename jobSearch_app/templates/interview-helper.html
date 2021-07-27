@@ -19,7 +19,7 @@
 
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/interview-helper.js' %}"></script>
 
     <title>Job Search Assistant</title>
 </head>
@@ -46,21 +46,27 @@
                             <li><a href="#tabs-5">General Answers</a></li>
                         </ul>
                         <div id="tabs-1">
-                            <p>About me</p>
-                            <form class="form-about-me" id="aboutMe_form" action="#" method="POST" autocomplete="off">
+                            <p>Elevator Pitch</p>
+                            <form id="elevatorPitch_form" action="/job/interview_helper/{{user.id}}" method="POST" autocomplete="off">
                                 {% csrf_token %}
                                 <div class="form-group row">
                                     <div class="input-group-prepend col-2">
-                                        <span class="input-group-text">About me: </span>
+                                        <span class="input-group-text">Elevator Pitch: </span>
                                     </div>
                                     <div class="col-10">
-                                        <input type="text" id="about_me" name="about_me" class="form-control form-control-lg">
+                                        <input type="text" id="elevator-pitch" name="elevator-pitch" class="form-control form-control-lg">
                                     </div>
                                 </div>
                                 <button class="btn btn-primary mr-2" type="submit">Add</button>
                             </form>
 
-                            <p class="lead text-left border mt-5">My newly added "About Me" post</p>
+                            <p class="lead text-left border mt-5">My newly added "Elevator Pitch" post</p>
+
+                            {% for pitch in elevator_pitch %}
+                                {{elevator_pitch.elevator_pitch}}
+                            {% endfor %}
+                            
+                            <p class="lead text-left border mt-5 results"></p>
                             <button class="btn btn-warning" type="submit"><a href="#">Update</a></button>
                             <button class="btn btn-danger" type="submit"><a href="#">Delete</a></button>
                         </div>

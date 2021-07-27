@@ -149,6 +149,27 @@ def interview_helper(request, user_id):
     else: 
         return redirect('/')
 
+def interview_helper_info(request, user_id, info_provided):
+    if 'userid' in request.session:
+        logged_user= User.objects.get(id=user_id)
+
+    if request.method == "POST":
+        if info_provided == 'elevator_pitch':
+            elevator_pitch = ElevatorPitch.objects.filter(creator = logged_user)
+            
+            for e in elevator_pitch:
+                print(e.elevator_pitch)
+
+            context = {
+                'user': logged_user,
+                'elevator_pitch': elevator_pitch
+            }
+
+            return render(request, 'interview-helper.html', context)        
+
+    else:
+        return render(request, 'interview-helper.html')
+
 def create_job(request, user_id):
     if 'userid' in request.session:
         context = {
