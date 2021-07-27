@@ -62,17 +62,14 @@
 
                             <p class="lead text-left border mt-5">My newly added "Elevator Pitch" post</p>
 
-                            {% for pitch in elevator_pitch %}
-                                {{elevator_pitch.elevator_pitch}}
-                            {% endfor %}
+                            <p class="lead text-left border mt-5" id="results"></p>
                             
-                            <p class="lead text-left border mt-5 results"></p>
                             <button class="btn btn-warning" type="submit"><a href="#">Update</a></button>
                             <button class="btn btn-danger" type="submit"><a href="#">Delete</a></button>
                         </div>
                         <div id="tabs-2">
                             <p>Strengths</p>
-                            <form class="form-strengths" id="strengths_form" action="#" method="POST" autocomplete="off">
+                            <form id="strengths_form" action="#" method="POST" autocomplete="off">
                                 {% csrf_token %}
                                 <div class="form-group row">
                                     <div class="input-group-prepend col-2">
@@ -86,7 +83,7 @@
                             </form>
 
                             <p class="mt-5">Weaknessess</p>
-                            <form class="form-weaknessess" id="weaknessess_form" action="#" method="POST" autocomplete="off">
+                            <form id="weaknessess_form" action="#" method="POST" autocomplete="off">
                                 {% csrf_token %}
                                 <div class="form-group row">
                                     <div class="input-group-prepend col-2">
@@ -105,7 +102,7 @@
                         </div>
                         <div id="tabs-3">
                             <p>Accomplishments</p>
-                            <form class="form-about-me" id="accomplishments_form" action="#" method="POST" autocomplete="off">
+                            <form id="accomplishments_form" action="#" method="POST" autocomplete="off">
                                 {% csrf_token %}
                                 <div class="form-group row">
                                     <div class="input-group-prepend col-2">
@@ -124,7 +121,7 @@
                         </div>
                         <div id="tabs-4">
                             <p>Interview Q&A</p>
-                            <form class="form-about-me" id="interview_form" action="#" method="POST" autocomplete="off">
+                            <form id="interview_form" action="#" method="POST" autocomplete="off">
                                 {% csrf_token %}
                                 <div class="form-group row">
                                     <div class="input-group-prepend col-2">
@@ -143,7 +140,7 @@
                         </div>
                         <div id="tabs-5">
                             <p>General Notes</p>
-                            <form class="form-about-me" id="general_form" action="#" method="POST" autocomplete="off">
+                            <form id="general_form" action="#" method="POST" autocomplete="off">
                                 {% csrf_token %}
                                 <div class="form-group row">
                                     <div class="input-group-prepend col-2">

@@ -126,20 +126,58 @@ def interview_helper_info(request, user_id, info_provided):
 
     if request.method == "POST":
         if info_provided == 'elevator_pitch':
-            elevator_pitch = ElevatorPitch.objects.filter(creator = logged_user)
-            
-            for e in elevator_pitch:
-                print(e.elevator_pitch)
+            elevator_pitch = ElevatorPitch.objects.create(
+                creator = logged_user,
+                elevator_pitch = request.POST['elevator-pitch']
+            )
+            return render(request, 'interview-helper.html')
+        
+        if info_provided == 'strengths':
+            strengths = Strength_Weakness.objects.create(
+                creator = logged_user,
+                str_weak = request.POST['strengths']
+            )
+            return render(request, 'interview-helper.html')
 
-            context = {
-                'user': logged_user,
-                'elevator_pitch': elevator_pitch
-            }
+        if info_provided == 'weaknessess':
+            weaknessess = Strength_Weakness.objects.create(
+                creator = logged_user,
+                weaknessess = request.POST['weaknessess']
+            )
+            return render(request, 'interview-helper.html')
 
-            return render(request, 'interview-helper.html', context)        
+        if info_provided == 'accomplishments':
+            accomplishments = Accomplishments.objects.create(
+                creator = logged_user,
+                accomplishments = request.POST['accomplishments']
+            )
+            return render(request, 'interview-helper.html')
 
-    else:
-        return render(request, 'interview-helper.html')
+        if info_provided == 'interview':
+            interview = CommonQA.objects.create(
+                creator = logged_user,
+                interview = request.POST['interview']
+            )
+            return render(request, 'interview-helper.html')
+
+        if info_provided == 'general':
+            general = General.objects.create(
+                creator = logged_user,
+                general = request.POST['general']
+            )
+            return render(request, 'interview-helper.html')
+
+
+    context = {
+        'user': logged_user,
+        'elevator_pitch': ElevatorPitch.objects.filter(creator = logged_user),
+        'strengths': Strength_Weakness.objects.filter(creator = logged_user),
+        'weaknessess': Strength_Weakness.objects.filter(creator = logged_user),
+        'accomplishments': Accomplishments.objects.filter(creator = logged_user),
+        'interview': CommonQA.objects.filter(creator = logged_user),
+        'general': General.objects.filter(creator = logged_user)
+    }
+    return render(request, 'interview-helper.html', context)
 
 def create_job(request, user_id):
     if 'userid' in request.session:
