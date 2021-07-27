@@ -74,20 +74,20 @@
                     </div>
                 </div>
             </div>
-            {%if this_job in this_user.job_likes.all%}
+            {%if this_job in user.job_likes.all%}
             <div class="row p-3 mt-4">
                 <div class="col-md-12  p-3 text-left border border-secondary shadow">
                     <div class="col-lg-6 offset-3">
                         <form class="d-flex" action="/job/{{this_job.id}}/note" method="POST">
                             {%csrf_token%}
                             <input class="form-control" type="text" placeholder="Add a Note" name="desc">
-                            <input type="hidden" value="{{this_user.id}}" name="user">
+                            <input type="hidden" value="{{user.id}}" name="user">
                             <button class="btn btn-info btn-sm" type="submit">Add</button>
                         </form>
                     </div>
                     <div id="note-card" class="row justify-content-evenly">
                         {%for note in this_job.notes.all%}
-                        {%if note.creator == this_user%}
+                        {%if note.creator == user%}
                         <div class="col-5 mt-3 p-3 text-left border border-secondary shadow">
                             <div class="d-flex justify-content-end">
                                 <h5 class="col-8">Date: {{note.updated_at|date}}</h5>

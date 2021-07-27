@@ -86,7 +86,7 @@ def job_info(request, job_id):
         print(this_job.job_desc)
         context = {
             'this_job': this_job,
-            'this_user': this_user,
+            'user': this_user,
         }
         return render(request, 'job-info.html', context)
     else: 
