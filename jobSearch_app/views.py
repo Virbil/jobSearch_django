@@ -266,3 +266,18 @@ def delete_note(request, job_id, note_id):
         this_note.delete()
         return redirect(f'/job/{job_id}')
     return redirect("/job")
+
+
+def add_job_interest(request, user_id):
+    this_user = User.objects.get(id=user_id)
+    this_job_int = Position.objects.create(
+        title = request.POST['title'],
+    )
+    this_job_int.pos_saves.add(this_user)
+    return redirect(f'/job/profile/{user_id}')
+
+
+def delete_job_interest(request, pos_id, user_id):
+    this_pos = Position.objects.get(id=pos_id)
+    this_pos.delete()
+    return redirect(f'/job/profile/{user_id}')

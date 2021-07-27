@@ -34,13 +34,13 @@
     <div class="container">
         <main role="main" class="inner cover">
             <div class="row justify-content-lg-between mt-5">
-                <div class="col-12">
+                <div class="col-12 mb-3">
                     <h1>PROFILE PAGE</h1>
                 </div>
                 <div class="col-md-6">
-                    <h4>
+                    <h3>
                         {{user.first_name}} {{user.last_name}}
-                    </h4>
+                    </h3>
                 </div>
                 <div class="col-md-6">
                     <a href="/job/interview_helper/{{user.id}}">
@@ -58,24 +58,33 @@
 
 
             <!-- Need to create a list to add to and then iterate through-->
-            <div class="row d-flex justify-content-evenly m-2">
+            <div class="row d-flex justify-content-evenly m-2 mt-3">
                 <div class="col-md-5 m-2 p-2 text-left border border-secondary shadow ">
                     <div class="row justify-content-center">
                         <h5 class="row justify-content-center mb-3">Job Position Interests</h5>
                         <div class="col-sm-9">
-                            <span class="badge badge-pill badge-dark mb-2">Web Developer <a href="#"
+                            {%for pos in user.user_pos_saves.all%}
+                            <span class="badge badge-pill badge-dark mb-2">{{pos.title}} <a href="/job/job_interest/{{pos.id}}/delete/{{user.id}}"
                                     class="badge badge-pill badge-light">X</a></span>
-                            <span class="badge badge-pill badge-dark">SDE <a href="#"
+                            {%endfor%}
+                            <!-- <span class="badge badge-pill badge-dark">SDE <a href="#"
                                     class="badge badge-pill badge-light">X</a></span>
                             <span class="badge badge-pill badge-dark">Software Engineer <a href="#"
                                     class="badge badge-pill badge-light">X</a></span>
                             <span class="badge badge-pill badge-dark">Junior Developer <a href="#"
                                     class="badge badge-pill badge-light">X</a></span>
                             <span class="badge badge-pill badge-dark">Python Developer <a href="#"
-                                    class="badge badge-pill badge-light">X</a></span>
+                                    class="badge badge-pill badge-light">X</a></span> -->
                         </div>
                     </div>
-                    <i class="bi bi-file-plus-fill float-end"></i>
+                    <div class=" offset-2 col-sm-8">
+                        <form class="d-flex justify-content-center" action="/job/job_interest/add/{{user.id}}" method="POST">
+                            {%csrf_token%}
+                            <input class="form-control" type="text" placeholder="Add Job Interest" name="title">
+                            <button class="btn btn-info btn-sm" type="submit">Add</button>
+                        </form>
+                    </div>
+                    <!-- <i class="bi bi-file-plus-fill float-end"></i> -->
                 </div>
 
                 <div class="col-md-5 m-2 p-2 text-left border border-secondary shadow ">

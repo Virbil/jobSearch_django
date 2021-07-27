@@ -20,4 +20,8 @@ urlpatterns = [
     path('interview_helper/<int:user_id>/<str:info_provided>', views.interview_helper_info),
     path('interview_helper/<int:user_id>/<str:info_provided>/update/<int:post_id>', views.interview_helper_info_update),
     path('interview_helper/<int:user_id>/<str:info_provided>/delete/<int:post_id>', views.interview_helper_info_delete),
+    # profile page Job interests,
+    path('job_interest/add/<int:user_id>', views.add_job_interest),
+    path('job_interest/<int:pos_id>/delete/<int:user_id>', views.delete_job_interest),
+
 ]
