@@ -41,35 +41,6 @@ def find_jobs(request):
         Job.objects.create(job_title=pos, company=job['Company'], location=job['Location'], salary_min=job['salary_min'], salary_max=job['salary_max'], job_url=job['JobUrl'], job_desc=job['JobDesc'], summary=job['Summary'], post_date=job['PostDate'])
     return redirect("/job")
 
-# @validate_request
-# def like_job(request, logged_user, like_job_id):
-#     if request.method == "POST":
-#         logged_user = User.objects.get(id=logged_user)
-#         job_to_like = Job.objects.get(id=like_job_id)
-#         logged_user.job_likes.add(job_to_like)
-#         if job_to_like in logged_user.job_dislikes.all():
-#             logged_user.job_dislikes.remove(logged_user)
-#     return redirect("/job")
-
-# @validate_request
-# def dislike_job(request, logged_user, dislike_job_id):
-#     if request.method == "POST":
-#         logged_user = User.objects.get(id=logged_user)
-#         job_to_dislike = Job.objects.get(id=dislike_job_id)
-#         logged_user.dislikes.add(job_to_dislike)
-#         if job_to_dislike in logged_user.job_likes.all():
-#             logged_user.job_likes.remove(logged_user)
-        
-#     return redirect("/job")
-
-# @validate_request
-# def reset_job(request, logged_user, reset_job_id):
-#     if request.method == "POST":
-#         job_to_reset = Job.objects.get(id=reset_job_id)
-#         logged_user.job_likes.remove(job_to_reset)
-#         logged_user.job_dislikes.remove(job_to_reset)
-#     return redirect("/job")
-
 @validate_request
 def like(request, user):
     if request.method == "GET":
