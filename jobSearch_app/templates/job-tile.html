@@ -26,7 +26,7 @@
     
     <p>Location: {{job.location}}</p>
     <p>Posted on: {{ job.post_date }}</p>
-    <a href="{{job.job_url}}">Indeed Link</a>
+    <a href="{{job.job_url}}" target="_blank">Indeed Link</a>
     <p>Summary:</p>
     <ul>
         {% for line in job.summary %}
