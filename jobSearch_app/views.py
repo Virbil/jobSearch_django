@@ -154,13 +154,24 @@ def create_note(request, job_id):
     if request.method == 'POST':
         this_job = Job.objects.get(id=job_id)
         this_user = User.objects.get(id=request.POST['user'])
-        this_note = Note.objects.create(creator= this_user, job_id=this_job, desc=request.POST['desc'])
+        Note.objects.create(creator= this_user, job_id=this_job, desc=request.POST['desc'])
         return redirect(f'/job/{job_id}')
     else: 
         return redirect('/')
 
+def note_edit(request, note_id):
+    if request.method == "POST":
+        this_note = Note.objects.filter(id=note_id)
+        if this_note:
+            this_note = this_note[0]
+            this_note.desc = request.POST['desc']
+            this_note.save()
+            return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    return redirect(f"/job")
+
 def delete_note(request, job_id, note_id):
+    if request.method == "POST":
         this_note = Note.objects.get(id=note_id)
         this_note.delete()
-
         return redirect(f'/job/{job_id}')
+    return redirect("/job")
