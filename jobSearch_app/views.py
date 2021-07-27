@@ -113,8 +113,15 @@ def profile(request, user_id):
 
 def interview_helper(request, user_id):
     if 'userid' in request.session:
+        user = User.objects.get(id=user_id)
+
         context = {
             "user": User.objects.get(id=user_id),
+            'elevator_pitch': ElevatorPitch.objects.filter(creator = user),
+            'str_weak': Strength_Weakness.objects.filter(creator = user),
+            'accomplishments': Accomplishments.objects.filter(creator = user),
+            'common_qa': CommonQA.objects.filter(creator = user),
+            'general': General.objects.filter(creator = user)
         }
         return render(request, 'interview-helper.html', context)
     else: 
@@ -122,62 +129,103 @@ def interview_helper(request, user_id):
 
 def interview_helper_info(request, user_id, info_provided):
     if 'userid' in request.session:
-        logged_user= User.objects.get(id=user_id)
+        user = User.objects.get(id=user_id)
 
-    if request.method == "POST":
+        if request.method == "POST":
+            if info_provided == 'elevator_pitch':
+                elevator_pitch = ElevatorPitch.objects.create(
+                    creator = user,
+                    elevator_pitch = request.POST['elevator-pitch']
+                )
+                return redirect(f'interview_helper/{user.id}')
+            
+            if info_provided == 'str_weak':
+                strengths = Strength_Weakness.objects.create(
+                    creator = user,
+                    str_weak = request.POST['str_weak']
+                )
+
+            if info_provided == 'accomplishments':
+                accomplishments = Accomplishments.objects.create(
+                    creator = user,
+                    accomplishments = request.POST['accomplishments']
+                )
+
+            if info_provided == 'common_qa':
+                common_qa = CommonQA.objects.create(
+                    creator = user,
+                    common_qa = request.POST['common_qa']
+                )
+
+            if info_provided == 'general':
+                general = General.objects.create(
+                    creator = user,
+                    general = request.POST['general']
+                )
+
+            return redirect(f'interview_helper/{user.id}')
+
+    else:
+        return redirect('/')
+
+def interview_helper_info_update(request, user_id, info_provided, id):
+    if 'userid' in request.session:
+        user = User.objects.get(id=user_id)
+
+        if request.method == "POST":
+            if info_provided == 'elevator_pitch':
+                edit_elevator_pitch = ElevatorPitch.objects.get(id = id)
+                edit_elevator_pitch.elevator_pitch = request.POST['elevator_pitch_edit']
+            
+            if info_provided == 'str_weak':
+                edit_str_weak = Strength_Weakness.objects.get(id = id)
+                edit_str_weak.str_weak = request.POST['str_weak_edit']
+
+            if info_provided == 'accomplishments':
+                edit_accomplishment = Accomplishments.objects.get(id = id)
+                edit_accomplishment.accomplishments = request.POST['accomplishments_edit']
+
+            if info_provided == 'common_qa':
+                edit_common_qa = CommonQA.objects.get(id = id)
+                edit_common_qa.common_qa = request.POST['common_qa_edit']
+
+            if info_provided == 'general':
+                edit_general = General.objects.get(id = id)
+                edit_general.general = request.POST['general_edit']
+
+            return redirect(f'interview_helper/{user_id}')
+
+    else:
+        return redirect('/')
+
+def interview_helper_info_delete(request, user_id, info_provided, id):
+    if 'userid' in request.session:
+        user = User.objects.get(id=user_id)
+
         if info_provided == 'elevator_pitch':
-            elevator_pitch = ElevatorPitch.objects.create(
-                creator = logged_user,
-                elevator_pitch = request.POST['elevator-pitch']
-            )
-            return render(request, 'interview-helper.html')
+            delete_elevator_pitch = ElevatorPitch.objects.get(id = id)
+            delete_elevator_pitch.delete()
         
-        if info_provided == 'strengths':
-            strengths = Strength_Weakness.objects.create(
-                creator = logged_user,
-                str_weak = request.POST['strengths']
-            )
-            return render(request, 'interview-helper.html')
-
-        if info_provided == 'weaknessess':
-            weaknessess = Strength_Weakness.objects.create(
-                creator = logged_user,
-                str_weak = request.POST['weaknessess']
-            )
-            return render(request, 'interview-helper.html')
+        if info_provided == 'str_weak':
+            delete_str_week = Strength_Weakness.objects.get(id = id)
+            delete_str_week.delete()
 
         if info_provided == 'accomplishments':
-            accomplishments = Accomplishments.objects.create(
-                creator = logged_user,
-                accomplishments = request.POST['accomplishments']
-            )
-            return render(request, 'interview-helper.html')
+            delete_accomplishments = Accomplishments.objects.get(id = id)
+            delete_accomplishments.delete()
 
-        if info_provided == 'interview':
-            interview = CommonQA.objects.create(
-                creator = logged_user,
-                interview = request.POST['interview']
-            )
-            return render(request, 'interview-helper.html')
+        if info_provided == 'common_qa':
+            delete_common_qa = CommonQA.objects.get(id = id)
+            delete_common_qa.delete()
 
         if info_provided == 'general':
-            general = General.objects.create(
-                creator = logged_user,
-                general = request.POST['general']
-            )
-            return render(request, 'interview-helper.html')
+            delete_general = General.objects.get(id = id)
+            delete_general.delete()
 
+        return redirect(f'interview_helper/{{user_id}}')
 
-    context = {
-        'user': logged_user,
-        'elevator_pitch': ElevatorPitch.objects.filter(creator = logged_user),
-        'strengths': Strength_Weakness.objects.filter(creator = logged_user),
-        'weaknessess': Strength_Weakness.objects.filter(creator = logged_user),
-        'accomplishments': Accomplishments.objects.filter(creator = logged_user),
-        'interview': CommonQA.objects.filter(creator = logged_user),
-        'general': General.objects.filter(creator = logged_user)
-    }
-    return render(request, 'interview-helper.html', context)
+    else:
+        return redirect('/')
 
 def create_job(request, user_id):
     if 'userid' in request.session:
