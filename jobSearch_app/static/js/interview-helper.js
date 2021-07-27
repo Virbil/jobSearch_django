@@ -1,12 +1,12 @@
 $(document).ready(function(){
     $('#elevatorPitch_form').submit(function(e) {
         e.preventDefault();
-
+        var user_id = $(this).attr("userID");
         post = document.getElementById("elevator-pitch").value;
         document.getElementById("results").innerHTML = post;
 
         $.ajax({
-            url: '/job/interview_helper/1/elevator_pitch',
+            url: `/job/interview_helper/${user_id}/elevator_pitch`,
             method: 'POST',
             data: $(this).serialize(),
             success: function(response) {
@@ -18,12 +18,12 @@ $(document).ready(function(){
 
     $('#strengths_form').submit(function(e) {
         e.preventDefault();
-
+        var user_id = $(this).attr("userID");
         post = document.getElementById("strengths").value;
         document.getElementById("results").innerHTML = post;
 
         $.ajax({
-            url: '/job/interview_helper/1/strengths',
+            url: `/job/interview_helper/${user_id}/strengths`,
             method: 'POST',
             data: $(this).serialize(),
             success: function(response) {
@@ -35,12 +35,12 @@ $(document).ready(function(){
     
     $('#weaknessess_form').submit(function(e) {
         e.preventDefault();
-
+        var user_id = $(this).attr("userID");
         post = document.getElementById("weaknessess").value;
         document.getElementById("results").innerHTML = post;
 
         $.ajax({
-            url: '/job/interview_helper/1/weaknessess',
+            url: `/job/interview_helper/${user_id}/weaknessess`,
             method: 'POST',
             data: $(this).serialize(),
             success: function(response) {
@@ -52,12 +52,12 @@ $(document).ready(function(){
     
     $('#accomplishments_form').submit(function(e) {
         e.preventDefault();
-
+        var user_id = $(this).attr("userID");
         post = document.getElementById("accomplishments").value;
         document.getElementById("results").innerHTML = post;
 
         $.ajax({
-            url: '/job/interview_helper/1/accomplishments',
+            url: `/job/interview_helper/${user_id}/accomplishments`,
             method: 'POST',
             data: $(this).serialize(),
             success: function(response) {
@@ -69,12 +69,12 @@ $(document).ready(function(){
     
     $('#interview_form').submit(function(e) {
         e.preventDefault();
-
+        var user_id = $(this).attr("userID");
         post = document.getElementById("interview").value;
         document.getElementById("results").innerHTML = post;
 
         $.ajax({
-            url: '/job/interview_helper/1/interview',
+            url: `/job/interview_helper/${user_id}/interview`,
             method: 'POST',
             data: $(this).serialize(),
             success: function(response) {
@@ -86,12 +86,12 @@ $(document).ready(function(){
     
     $('#general_form').submit(function(e) {
         e.preventDefault();
-
+        var user_id = $(this).attr("userID");
         post = document.getElementById("general").value;
         document.getElementById("results").innerHTML = post;
 
         $.ajax({
-            url: '/job/interview_helper/1/general',
+            url: `/job/interview_helper/${user_id}/general`,
             method: 'POST',
             data: $(this).serialize(),
             success: function(response) {
