@@ -142,7 +142,7 @@ def interview_helper_info(request, user_id, info_provided):
         if info_provided == 'weaknessess':
             weaknessess = Strength_Weakness.objects.create(
                 creator = logged_user,
-                weaknessess = request.POST['weaknessess']
+                str_weak = request.POST['weaknessess']
             )
             return render(request, 'interview-helper.html')
 
