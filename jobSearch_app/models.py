@@ -103,3 +103,5 @@ class General(models.Model):
     general = models.TextField()
     created_at = models.DateField(auto_now=True)
     updated_at = models.DateField(auto_now_add=True)
+
+
