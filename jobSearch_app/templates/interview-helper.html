@@ -19,7 +19,6 @@
 
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <script src="{% static 'js/interview-helper.js' %}"></script>
 
     <title>Job Search Assistant</title>
 </head>
@@ -47,7 +46,7 @@
                         </ul>
                         <div id="tabs-1">
                             <p>Elevator Pitch</p>
-                            <form id="elevatorPitch_form" action="/job/interview_helper/{{user.id}}" method="POST" autocomplete="off">
+                            <form id="elevatorPitch_form" action="/job/interview_helper/{{user.id}}/elevator_pitch" method="POST" autocomplete="off">
                                 {% csrf_token %}
                                 <div class="form-group row">
                                     <div class="input-group-prepend col-2">
@@ -60,49 +59,48 @@
                                 <button class="btn btn-primary mr-2" type="submit">Add</button>
                             </form>
 
-                            <p class="lead text-left border mt-5">My newly added "Elevator Pitch" post</p>
-
-                            <p class="lead text-left border mt-5" id="results"></p>
+                            {% for pitch in elevator_pitch %}
+                                <form id="elevatorPitch_editForm" action="/job/interview_helper/{{user.id}}/elevator_pitch/update/{{ pitch.id }}" method="POST" autocomplete="off">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <textarea class="form-control border mt-5" id="elevator_pitch_edit">{{ pitch.elevator_pitch }}</textarea>
+                                    </div>
+                                    <button class="btn btn-warning" type="submit">Update</button>
+                                </form>
+                                <button class="btn btn-danger" type="submit"><a href="/job/interview_helper/{{user.id}}/elevator_pitch/delete/{{ pitch.id }}">Delete</a></button>
+                            {% endfor %}
                             
-                            <button class="btn btn-warning" type="submit"><a href="#">Update</a></button>
-                            <button class="btn btn-danger" type="submit"><a href="#">Delete</a></button>
                         </div>
                         <div id="tabs-2">
-                            <p>Strengths</p>
-                            <form id="strengths_form" action="#" method="POST" autocomplete="off">
+                            <p>Strengths & Weaknessess</p>
+                            <form id="str_weak_form" action="/job/interview_helper/{{user.id}}/str_weak" method="POST" autocomplete="off">
                                 {% csrf_token %}
                                 <div class="form-group row">
-                                    <div class="input-group-prepend col-2">
-                                        <span class="input-group-text">Strengths: </span>
+                                    <div class="input-group-prepend col-3">
+                                        <span class="input-group-text">Strengths|Weaknessess: </span>
                                     </div>
-                                    <div class="col-10">
-                                        <input type="text" id="strengths" name="strengths" class="form-control form-control-lg">
+                                    <div class="col-9">
+                                        <input type="text" id="str_weak" name="str_weak" class="form-control form-control-lg">
                                     </div>
                                 </div>
                                 <button class="btn btn-primary mr-2" type="submit">Add</button>
                             </form>
 
-                            <p class="mt-5">Weaknessess</p>
-                            <form id="weaknessess_form" action="#" method="POST" autocomplete="off">
-                                {% csrf_token %}
-                                <div class="form-group row">
-                                    <div class="input-group-prepend col-2">
-                                        <span class="input-group-text">Weaknessess: </span>
+                            {% for s_w in str_weak %}
+                                <form id="str_weak_editForm" action="/job/interview_helper/{{user.id}}/str_weak/update/{{ s_w.id }}" method="POST" autocomplete="off">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <textarea class="form-control border mt-5" id="str_weak_edit">{{ s_w.str_weak }}</textarea>
                                     </div>
-                                    <div class="col-10">
-                                        <input type="text" id="weaknessess" name="weaknessess" class="form-control form-control-lg">
-                                    </div>
-                                </div>
-                                <button class="btn btn-primary mr-2" type="submit">Add</button>
-                            </form>
+                                    <button class="btn btn-warning" type="submit">Update</button>
+                                    <button class="btn btn-danger" type="submit"><a href="/job/interview_helper/{{user.id}}/str_weak/delete/{{ s_w.id }}">Delete</a></button>
+                                </form>
+                            {% endfor %}
 
-                            <p class="lead text-left border mt-5">My newly added "Strength/Weakness" post</p>
-                            <button class="btn btn-warning" type="submit"><a href="#">Update</a></button>
-                            <button class="btn btn-danger" type="submit"><a href="#">Delete</a></button>
                         </div>
                         <div id="tabs-3">
                             <p>Accomplishments</p>
-                            <form id="accomplishments_form" action="#" method="POST" autocomplete="off">
+                            <form id="accomplishments_form" action="/job/interview_helper/{{user.id}}/accomplishments" method="POST" autocomplete="off">
                                 {% csrf_token %}
                                 <div class="form-group row">
                                     <div class="input-group-prepend col-2">
@@ -115,32 +113,46 @@
                                 <button class="btn btn-primary mr-2" type="submit">Add</button>
                             </form>
 
-                            <p class="lead text-left border mt-5">My newly added "Accomplishments" post</p>
-                            <button class="btn btn-warning" type="submit"><a href="#">Update</a></button>
-                            <button class="btn btn-danger" type="submit"><a href="#">Delete</a></button>
+                            {% for a in accomplishments %}
+                                <form id="accomplishments_editForm" action="/job/interview_helper/{{user.id}}/accomplishments/update/{{ a.id }}" method="POST" autocomplete="off">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <textarea class="form-control border mt-5" id="accomplishments_edit">{{ a.accomplishments }}</textarea>
+                                    </div>
+                                    <button class="btn btn-warning" type="submit">Update</button>
+                                    <button class="btn btn-danger" type="submit"><a href="/job/interview_helper/{{user.id}}/accomplishments/delete/{{ a.id }}">Delete</a></button>
+                                </form>
+                            {% endfor %}
                         </div>
                         <div id="tabs-4">
                             <p>Interview Q&A</p>
-                            <form id="interview_form" action="#" method="POST" autocomplete="off">
+                            <form id="interview_form" action="/job/interview_helper/{{user.id}}/common_qa" method="POST" autocomplete="off">
                                 {% csrf_token %}
                                 <div class="form-group row">
                                     <div class="input-group-prepend col-2">
                                         <span class="input-group-text">Interview Q&A: </span>
                                     </div>
                                     <div class="col-10">
-                                        <input type="text" id="interview" name="interview" class="form-control form-control-lg">
+                                        <input type="text" id="common_qa" name="common_qa" class="form-control form-control-lg">
                                     </div>
                                 </div>
                                 <button class="btn btn-primary mr-2" type="submit">Add</button>
                             </form>
 
-                            <p class="lead text-left border mt-5">My newly added "Interview Q&A" post</p>
-                            <button class="btn btn-warning" type="submit"><a href="#">Update</a></button>
-                            <button class="btn btn-danger" type="submit"><a href="#">Delete</a></button>
+                            {% for qa in common_qa %}
+                                <form id="common_qa_editForm" action="/job/interview_helper/{{user.id}}/common_qa/update/{{ qa.id }}" method="POST" autocomplete="off">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <textarea class="form-control border mt-5" id="common_qa_edit">{{ qa.common_qa }}</textarea>
+                                    </div>
+                                    <button class="btn btn-warning" type="submit">Update</button>
+                                    <button class="btn btn-danger" type="submit"><a href="/job/interview_helper/{{user.id}}/accomplishments/delete/{{ qa.id }}">Delete</a></button>
+                                </form>
+                            {% endfor %}
                         </div>
                         <div id="tabs-5">
                             <p>General Notes</p>
-                            <form id="general_form" action="#" method="POST" autocomplete="off">
+                            <form id="general_form" action="/job/interview_helper/{{user.id}}/general" method="POST" autocomplete="off">
                                 {% csrf_token %}
                                 <div class="form-group row">
                                     <div class="input-group-prepend col-2">
@@ -153,9 +165,16 @@
                                 <button class="btn btn-primary mr-2" type="submit">Add</button>
                             </form>
 
-                            <p class="lead text-left border mt-5">My newly added "General Notes" post</p>
-                            <button class="btn btn-warning" type="submit"><a href="#">Update</a></button>
-                            <button class="btn btn-danger" type="submit"><a href="#">Delete</a></button>
+                            {% for g in general %}
+                                <form id="general_editForm" action="/job/interview_helper/{{user.id}}/general/update/{{ g.id }}" method="POST" autocomplete="off">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <textarea class="form-control border mt-5" id="general_edit">{{ g.common_qa }}</textarea>
+                                    </div>
+                                    <button class="btn btn-warning" type="submit">Update</button>
+                                    <button class="btn btn-danger" type="submit"><a href="/job/interview_helper/{{user.id}}/accomplishments/delete/{{ g.id }}">Delete</a></button>
+                                </form>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
