@@ -53,7 +53,7 @@
                                         <span class="input-group-text">Elevator Pitch: </span>
                                     </div>
                                     <div class="col-10">
-                                        <input type="text" id="elevator-pitch" userID="{{user.id}}" name="elevator-pitch" class="form-control form-control-lg">
+                                        <input type="text" id="elevator-pitch" name="elevator-pitch" class="form-control form-control-lg">
                                     </div>
                                 </div>
                                 <button class="btn btn-primary mr-2" type="submit">Add</button>
@@ -63,7 +63,7 @@
                                 <form id="elevatorPitch_editForm" action="/job/interview_helper/{{user.id}}/elevator_pitch/update/{{ pitch.id }}" method="POST" autocomplete="off">
                                     {% csrf_token %}
                                     <div class="form-group">
-                                        <textarea class="form-control border mt-5" id="elevator_pitch_edit">{{ pitch.elevator_pitch }}</textarea>
+                                        <textarea class="form-control border mt-5" name="elevator_pitch_edit" id="elevator_pitch_edit">{{ pitch.elevator_pitch }}</textarea>
                                     </div>
                                     <button class="btn btn-warning" type="submit">Update</button>
                                 </form>
@@ -91,7 +91,7 @@
                                 <form id="str_weak_editForm" action="/job/interview_helper/{{user.id}}/str_weak/update/{{ s_w.id }}" method="POST" autocomplete="off">
                                     {% csrf_token %}
                                     <div class="form-group">
-                                        <textarea class="form-control border mt-5" id="str_weak_edit">{{ s_w.str_weak }}</textarea>
+                                        <textarea class="form-control border mt-5" name="str_weak_edit" id="str_weak_edit">{{ s_w.str_weak }}</textarea>
                                     </div>
                                     <button class="btn btn-warning" type="submit">Update</button>
                                     <button class="btn btn-danger" type="submit"><a href="/job/interview_helper/{{user.id}}/str_weak/delete/{{ s_w.id }}">Delete</a></button>
@@ -108,7 +108,7 @@
                                         <span class="input-group-text">Accomplishments: </span>
                                     </div>
                                     <div class="col-10">
-                                        <input type="text" id="accomplishments" userID="{{user.id}}" name="accomplishments" class="form-control form-control-lg">
+                                        <input type="text" id="accomplishments"  name="accomplishments" class="form-control form-control-lg">
                                     </div>
                                 </div>
                                 <button class="btn btn-primary mr-2" type="submit">Add</button>
@@ -118,7 +118,7 @@
                                 <form id="accomplishments_editForm" action="/job/interview_helper/{{user.id}}/accomplishments/update/{{ a.id }}" method="POST" autocomplete="off">
                                     {% csrf_token %}
                                     <div class="form-group">
-                                        <textarea class="form-control border mt-5" id="accomplishments_edit">{{ a.accomplishments }}</textarea>
+                                        <textarea class="form-control border mt-5" name="accomplishments_edit" id="accomplishments_edit">{{ a.accomplishments }}</textarea>
                                     </div>
                                     <button class="btn btn-warning" type="submit">Update</button>
                                     <button class="btn btn-danger" type="submit"><a href="/job/interview_helper/{{user.id}}/accomplishments/delete/{{ a.id }}">Delete</a></button>
@@ -144,7 +144,7 @@
                                 <form id="common_qa_editForm" action="/job/interview_helper/{{user.id}}/common_qa/update/{{ qa.id }}" method="POST" autocomplete="off">
                                     {% csrf_token %}
                                     <div class="form-group">
-                                        <textarea class="form-control border mt-5" id="common_qa_edit">{{ qa.common_qa }}</textarea>
+                                        <textarea class="form-control border mt-5" name="common_qa_edit" id="common_qa_edit">{{ qa.common_qa }}</textarea>
                                     </div>
                                     <button class="btn btn-warning" type="submit">Update</button>
                                     <button class="btn btn-danger" type="submit"><a href="/job/interview_helper/{{user.id}}/accomplishments/delete/{{ qa.id }}">Delete</a></button>
@@ -160,7 +160,7 @@
                                         <span class="input-group-text">General Notes: </span>
                                     </div>
                                     <div class="col-10">
-                                        <input type="text" id="general" userID="{{user.id}}" name="general" class="form-control form-control-lg">
+                                        <input type="text" id="general"  name="general" class="form-control form-control-lg">
                                     </div>
                                 </div>
                                 <button class="btn btn-primary mr-2" type="submit">Add</button>

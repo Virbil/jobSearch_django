@@ -137,7 +137,6 @@ def interview_helper_info(request, user_id, info_provided):
                     creator = user,
                     elevator_pitch = request.POST['elevator-pitch']
                 )
-                return redirect(f'/job/interview_helper/{user.id}')
             
             if info_provided == 'str_weak':
                 strengths = Strength_Weakness.objects.create(
@@ -168,61 +167,67 @@ def interview_helper_info(request, user_id, info_provided):
     else:
         return redirect('/')
 
-def interview_helper_info_update(request, user_id, info_provided, id):
+def interview_helper_info_update(request, user_id, info_provided, post_id):
     if 'userid' in request.session:
         user = User.objects.get(id=user_id)
 
         if request.method == "POST":
             if info_provided == 'elevator_pitch':
-                edit_elevator_pitch = ElevatorPitch.objects.get(id = id)
+                edit_elevator_pitch = ElevatorPitch.objects.get(id = post_id)
                 edit_elevator_pitch.elevator_pitch = request.POST['elevator_pitch_edit']
+                edit_elevator_pitch.save()
+                print(post_id)
             
             if info_provided == 'str_weak':
-                edit_str_weak = Strength_Weakness.objects.get(id = id)
+                edit_str_weak = Strength_Weakness.objects.get(id = post_id)
                 edit_str_weak.str_weak = request.POST['str_weak_edit']
+                edit_elevator_pitch.save()
 
             if info_provided == 'accomplishments':
-                edit_accomplishment = Accomplishments.objects.get(id = id)
+                edit_accomplishment = Accomplishments.objects.get(id = post_id)
                 edit_accomplishment.accomplishments = request.POST['accomplishments_edit']
+                edit_elevator_pitch.save()
 
             if info_provided == 'common_qa':
-                edit_common_qa = CommonQA.objects.get(id = id)
+                edit_common_qa = CommonQA.objects.get(id = post_id)
                 edit_common_qa.common_qa = request.POST['common_qa_edit']
+                edit_elevator_pitch.save()
 
             if info_provided == 'general':
-                edit_general = General.objects.get(id = id)
+                edit_general = General.objects.get(id = post_id)
                 edit_general.general = request.POST['general_edit']
+                edit_elevator_pitch.save()
 
-            return redirect(f'interview_helper/{user_id}')
+            return redirect(f'/job/interview_helper/{user_id}')
 
     else:
         return redirect('/')
 
-def interview_helper_info_delete(request, user_id, info_provided, id):
+def interview_helper_info_delete(request, user_id, info_provided, post_id):
     if 'userid' in request.session:
         user = User.objects.get(id=user_id)
 
         if info_provided == 'elevator_pitch':
-            delete_elevator_pitch = ElevatorPitch.objects.get(id = id)
+            delete_elevator_pitch = ElevatorPitch.objects.get(id = post_id)
             delete_elevator_pitch.delete()
         
         if info_provided == 'str_weak':
-            delete_str_week = Strength_Weakness.objects.get(id = id)
+            delete_str_week = Strength_Weakness.objects.get(id = post_id)
             delete_str_week.delete()
 
         if info_provided == 'accomplishments':
-            delete_accomplishments = Accomplishments.objects.get(id = id)
+            delete_accomplishments = Accomplishments.objects.get(id = post_id)
             delete_accomplishments.delete()
 
         if info_provided == 'common_qa':
-            delete_common_qa = CommonQA.objects.get(id = id)
+            delete_common_qa = CommonQA.objects.get(id = post_id)
             delete_common_qa.delete()
 
         if info_provided == 'general':
-            delete_general = General.objects.get(id = id)
+            delete_general = General.objects.get(id = post_id)
             delete_general.delete()
 
-        return redirect(f'interview_helper/{{user_id}}')
+        return redirect(f'/job/interview_helper/{{user_id}}')
 
     else:
         return redirect('/')
