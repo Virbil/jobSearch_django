@@ -11,6 +11,8 @@ urlpatterns = [
     path('dislike', views.dislike, name="dislike"),
     # new paths made by Archer
     path('<int:job_id>', views.job_info),
+    path('<int:job_id>/note', views.create_note),
+    path('<int:job_id>/note_delete/<int:note_id>', views.delete_note),
     path('create/<int:user_id>', views.create_job),
     path('profile/<int:user_id>', views.profile),
     path('calendar/<int:user_id>', views.calendar),

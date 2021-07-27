@@ -33,21 +33,21 @@
                 <div class=" col-12">
                     <div class="col-lg-12 d-flex justify-content-between">
                         <div class="job-title col-lg-9">
-                            <h1 class="text-left text-info">{{this_job.job_title.title}}</h1>
+                            <h2 class="text-left text-info">{{this_job.job_title.title}}</h2>
                         </div>
                         <div class="col-lg-3 text-right">
-                            {% if job in user.job_likes.all %}
-                            <a class="likebutton  pr-1" name="Reset" style="cursor: pointer;" id="like{{job.id}}"  data-catid="{{job.id}}"><i class="bi bi-hand-thumbs-up-fill"></i></a><span>|</span>
+                            {% if this_job in user.job_likes.all %}
+                            <a class="likebutton  pr-1" name="Reset" style="cursor: pointer;" id="like{{this_job.id}}"  data-catid="{{this_job.id}}"><i class="bi bi-hand-thumbs-up-fill"></i></a><span>|</span>
                             {% else %}
-                            <a class="likebutton  pr-1" name="Like" style="cursor: pointer;" id="like{{job.id}}"  data-catid="{{job.id}}"><i class="bi bi-hand-thumbs-up"></i></a><span>|</span>
+                            <a class="likebutton  pr-1" name="Like" style="cursor: pointer;" id="like{{this_job.id}}"  data-catid="{{this_job.id}}"><i class="bi bi-hand-thumbs-up"></i></a><span>|</span>
                             {% endif %}
-                            <a class="dislikebutton" name="Dislike" style="cursor: pointer;" id="dislike{{job.id}}" data-catid="{{job.id}}"><i class="bi bi-hand-thumbs-down"></i></a>
+                            <a class="dislikebutton" name="Dislike" style="cursor: pointer;" id="dislike{{this_job.id}}" data-catid="{{this_job.id}}"><i class="bi bi-hand-thumbs-down"></i></a>
                         </div>
                     </div>
                     <div class= "col-lg-12 text-left  mt-2">
                         <h6>{{this_job.location}}</h6>
                     </div>
-                    <div class= "col-lg-12 text-left mt-4">
+                    <div class= "col-lg-12 text-left mt-3">
                         <h3>{{this_job.company}}</h3>
                     </div>
                     <div id="desc-card" class="col-md-12 mt-4 p-3 text-left border border-secondary shadow">
@@ -71,15 +71,44 @@
                         {%for line in this_job.job_desc%}
                         <p>{{line}}</p>
                         {%endfor%}
-                        <p>Qualifications:</p>
-                        <ul>
-                            {% for line in this_job.qualifications.all %}
-                            <li>{{ line.name }}: {{ line.duration }} ({{ line.required }}) </li>
-                            {% endfor %}
-                        </ul>
                     </div>
                 </div>
             </div>
+            {%if this_job in this_user.job_likes.all%}
+            <div class="row p-3 mt-4">
+                <div class="col-md-12  p-3 text-left border border-secondary shadow">
+                    <div class="col-lg-6 offset-3">
+                        <form class="d-flex" action="/job/{{this_job.id}}/note" method="POST">
+                            {%csrf_token%}
+                            <input class="form-control" type="text" placeholder="Add a Note" name="desc">
+                            <input type="hidden" value="{{this_user.id}}" name="user">
+                            <button class="btn btn-info btn-sm" type="submit">Add</button>
+                        </form>
+                    </div>
+                    <div id="note-card" class="row justify-content-evenly ">
+                        {%for note in this_job.notes.all%}
+                        {%if note.creator == this_user%}
+                        <div class="col-5 mt-3 p-3 text-left border border-secondary shadow">
+                            <div class="d-flex justify-content-end">
+                                <h5 class="col-8">{{note.updated_at|date}}</h5>
+                                <div class="col-3 float-lg-right">
+                                    <a  href="/job/{{this_job.id}}/note_delete/{{note.id}}" class="pl-3">
+                                        <span data-feather="trash-2"></span>
+                                    </a>
+                                    <a href="/job/note_edit/{{note.id}}" class="pl-3">
+                                        <span data-feather="edit"></span>
+                                    </a>
+                                </div>
+                            </div>
+                            <p class="ml-3">{{note.desc}}</p>
+                        </div>
+                        {%endif%}
+                        {%endfor%}
+                    </div>
+                </div>
+
+            </div>
+            {%endif%}
 
         </main>
     </div>

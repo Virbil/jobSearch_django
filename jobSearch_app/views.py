@@ -107,6 +107,7 @@ def dislike(request, user):
 
 def job_info(request, job_id):
     if 'userid' in request.session:
+        this_user = User.objects.get(id=request.session['userid'])
         this_job = Job.objects.get(id=job_id)
         this_job.job_desc = ast.literal_eval(this_job.job_desc)
         this_job.summary = this_job.summary.split(";")
@@ -114,6 +115,7 @@ def job_info(request, job_id):
         print(this_job.job_desc)
         context = {
             'this_job': this_job,
+            'this_user': this_user,
         }
         return render(request, 'job-info.html', context)
     else: 
@@ -176,3 +178,18 @@ def create_job(request, user_id):
         return render(request, 'create-job.html', context)
     else: 
         return redirect('/')
+
+def create_note(request, job_id):
+    if request.method == 'POST':
+        this_job = Job.objects.get(id=job_id)
+        this_user = User.objects.get(id=request.POST['user'])
+        this_note = Note.objects.create(creator= this_user, job_id=this_job, desc=request.POST['desc'])
+        return redirect(f'/job/{job_id}')
+    else: 
+        return redirect('/')
+
+def delete_note(request, job_id, note_id):
+        this_note = Note.objects.get(id=note_id)
+        this_note.delete()
+
+        return redirect(f'/job/{job_id}')
