@@ -50,8 +50,6 @@ $(document).ready(function(){
         })
     })
 
-
-
 })
 
 
