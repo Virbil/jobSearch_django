@@ -60,7 +60,7 @@
                                 {% endif %}
                             </div>
                         </div>
-                        <a class="text-info mb-4" href="{{this_job.job_url}}" target="_blank">Indeed Link</a>
+                        <a class="text-info mb-4" href="{{this_job.job_url}}" target="_blank">APPLY HERE</a>
                         <p>Summary:</p>
                         <ul>
                             {% for line in this_job.summary %}
@@ -85,7 +85,7 @@
                             <button class="btn btn-info btn-sm" type="submit">Add</button>
                         </form>
                     </div>
-                    <div id="note-card" class="row justify-content-evenly ">
+                    <div id="note-card" class="row justify-content-evenly">
                         {%for note in this_job.notes.all%}
                         {%if note.creator == this_user%}
                         <div class="col-5 mt-3 p-3 text-left border border-secondary shadow">
@@ -119,14 +119,13 @@
                                 </div>
                                 <p class="ml-3">{{note.desc}}</p>
                             </div>
-                        </div>
+
                         {%endif%}
                         {%endfor%}
                     </div>
                 </div>
             </div>
             {%endif%}
-
         </main>
     </div>
 

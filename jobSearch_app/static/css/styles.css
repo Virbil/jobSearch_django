@@ -89,7 +89,8 @@ img {
 }
 
 #note-card {
-    height: 125px;
+    min-height: fit-content;
+    max-height: 125px;
     overflow-y: auto;
 }
 
