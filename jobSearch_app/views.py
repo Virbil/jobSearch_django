@@ -18,7 +18,7 @@ from functools import reduce
 @validate_request
 def home(request, logged_user):
     # filter logic that uses you interests to show you jobs that contain those interest words in the description
-    interests = []
+    interests = ['']
     for value in logged_user.user_pos_saves.all():
         interests.append(value.title)
     print(interests)
