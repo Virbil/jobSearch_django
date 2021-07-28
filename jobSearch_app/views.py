@@ -6,13 +6,12 @@ from jobSearch_app.models import *
 from django.shortcuts import render, redirect
 import datetime as dt
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-import requests
-import json
 from .indeed_web_scrape import get_jobs
 import ast
 import operator
 from django.db.models import Q
 from functools import reduce
+from django.core.files.storage import FileSystemStorage
 
 
 @validate_request
@@ -96,7 +95,6 @@ def job_info(request, job_id):
         this_job.job_desc = ast.literal_eval(this_job.job_desc)
         this_job.summary = this_job.summary.split(";")
         this_job.summary.pop()
-        print(this_job.job_desc)
         context = {
             'this_job': this_job,
             'user': this_user,
@@ -189,7 +187,6 @@ def interview_helper_info_update(request, user_id, info_provided, post_id):
                 edit_elevator_pitch = ElevatorPitch.objects.get(id = post_id)
                 edit_elevator_pitch.elevator_pitch = request.POST['elevator_pitch_edit']
                 edit_elevator_pitch.save()
-                print(post_id)
             
             if info_provided == 'str_weak':
                 edit_str_weak = Strength_Weakness.objects.get(id = post_id)
@@ -294,3 +291,14 @@ def delete_job_interest(request, pos_id, user_id):
     this_pos = Position.objects.get(id=pos_id)
     this_pos.delete()
     return redirect(f'/job/profile/{user_id}')
+
+# following method MOSTLY from: 
+# https://simpleisbetterthancomplex.com/tutorial/2016/08/01/how-to-upload-files-with-django.html
+def upload(request, job_id):
+    if request.method == 'POST':
+        uploaded_file = request.FILES['resume']
+        fs = FileSystemStorage()
+        file_name = fs.save(uploaded_file.name, uploaded_file)
+        request.session['url'] = fs.url(file_name)
+
+    return redirect(f'/job/{job_id}')
