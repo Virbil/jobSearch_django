@@ -42,19 +42,12 @@ def home(request, logged_user, jobs=None):
         jobs = Job.objects.exclude(dislikes=logged_user).order_by('-post_date')
     else:
         jobs = jobs
-    
     for j in jobs:
         j.job_desc = ast.literal_eval(j.job_desc)
-        if j.summary:
+        if j.summary != '':
             if j.summary[-1] == ";":
                 j.summary = j.summary.split(";")
-                j.summary.pop()
-        
-        # print(j.location)
-    
-    # for state in Location.objects.all():
-    #     print(state.state.abbr)
-    
+                j.summary.pop()        
 
     context = {
         "user": logged_user,
@@ -84,6 +77,9 @@ def find_jobs(request, logged_user):
         job_ids.append(job.id)
 
     jobs = Job.objects.filter(id__in=job_ids)
+    for j in jobs:
+        j.summary = j.summary.split(";")
+        j.summary.pop()
     context = {
         "user": logged_user,
         'jobs': jobs,
