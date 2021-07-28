@@ -1,0 +1,12 @@
+{% block content %}
+    <h2 class="mt-5">Upload Resume</h2>
+    <form action="/job/upload/{{this_job.id}}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="resume">
+        <button type="submit">Upload</button>
+    </form>
+
+    {% if request.session.url %}
+        <p class="mt-3 lead">Uploaded file: <a href="{{ request.session.url }}" target="_blank">{{ request.session.url }}</a></p>
+    {% endif %}
+{% endblock %}

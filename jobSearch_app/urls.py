@@ -23,5 +23,5 @@ urlpatterns = [
     # profile page Job interests,
     path('job_interest/add/<int:user_id>', views.add_job_interest),
     path('job_interest/<int:pos_id>/delete/<int:user_id>', views.delete_job_interest),
-
+    path('upload/<int:job_id>', views.upload, name='upload'),
 ]
