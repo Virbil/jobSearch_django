@@ -122,12 +122,44 @@ def job_info(request, job_id):
     else: 
         return redirect('/')
 
-def calendar(request, user_id):
+def create_job(request, user_id):
     if 'userid' in request.session:
+        print("Made it to post job")
         context = {
-            "user": User.objects.get(id=user_id)
+            "user": User.objects.get(id=user_id),
         }
-        return render(request, 'calendar.html', context)
+        return render(request, 'create-job.html', context)
+    else: 
+        return redirect('/')
+
+def post_job(request, user_id):
+    if 'userid' in request.session:
+        user = User.objects.get(id = user_id)
+        location = request.POST['city'].title() + ',' + request.POST['state'].upper()
+        new_position = Position.objects.create(
+            title = request.POST['job_title'],
+        )
+        new_position.pos_saves.add(user)
+
+        new_job = Job.objects.create(
+            job_title = new_position,
+            company = request.POST['company'],
+            location = location,
+            post_date = request.POST['post_date'],
+            salary_min = request.POST['min'],
+            salary_max = request.POST['max'],
+            job_url = request.POST['job_url'],
+            summary = request.POST['summary'],
+            job_desc = request.POST['description'],
+        )
+
+        qualifications = Qualification.objects.create(
+            name = request.POST['required']
+        )
+        new_job.qualifications.add(qualifications)
+        new_job.likes.add(user)
+
+        return redirect('/job')
     else: 
         return redirect('/')
 
@@ -270,15 +302,6 @@ def interview_helper_info_delete(request, user_id, info_provided, post_id):
         return redirect(f'/job/interview_helper/{user_id}')
 
     else:
-        return redirect('/')
-
-def create_job(request, user_id):
-    if 'userid' in request.session:
-        context = {
-            "user": User.objects.get(id=user_id),
-        }
-        return render(request, 'create-job.html', context)
-    else: 
         return redirect('/')
 
 def create_note(request, job_id):
