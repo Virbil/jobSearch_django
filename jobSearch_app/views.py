@@ -17,18 +17,37 @@ from django.core.files.storage import FileSystemStorage
 @validate_request
 def home(request, logged_user):
     # filter logic that uses you interests to show you jobs that contain those interest words in the description
-    interests = ['']
+    job_interests = ['']
     for value in logged_user.user_pos_saves.all():
-        interests.append(value.title)
-    print(interests)
-    filter_for= (Q(job_desc__contains=key_word) for key_word in interests)
-    query = reduce(operator.or_, filter_for)
+        job_interests.append(value.title)
+    print(job_interests)
+    filter_job= (Q(job_desc__contains=key_word) for key_word in job_interests)
+    job_query = reduce(operator.or_, filter_job)
     # end of interest logic
-    jobs = Job.objects.all().filter(query).exclude(dislikes=logged_user).order_by('-post_date')
+    
+    loc_interests = ['']
+    for loc in logged_user.user_loc_saves.all():
+        if loc_interests[0] == '':
+            loc_interests.pop(0)
+            loc_interests.append(f"{loc.city}")
+            loc_interests.append(f"{loc.state}")
+        else:
+            loc_interests.append(f"{loc.city}")
+            loc_interests.append(f"{loc.state}")
+    print(loc_interests)
+    filter_loc = (Q(location__contains=key_loc) for key_loc in loc_interests)
+    loc_query = reduce(operator.or_, filter_loc)
+
+    jobs = Job.objects.filter(job_query).filter(loc_query).exclude(dislikes=logged_user).order_by('-post_date')
     for j in jobs:
         j.job_desc = ast.literal_eval(j.job_desc)
         j.summary = j.summary.split(";")
         j.summary.pop()
+        print(j.location)
+    
+    for state in Location.objects.all():
+        print(state.state.abbr)
+    
 
     context = {
         "user": logged_user,
@@ -114,9 +133,11 @@ def calendar(request, user_id):
 
 def profile(request, user_id):
     if 'userid' in request.session:
-
+        logged_user = User.objects.get(id=user_id)
+        remote_filter= logged_user.user_loc_saves.filter(city="remote")
         context = {
             "user": User.objects.get(id=user_id),
+            'remote_filter': remote_filter
         }
         return render(request, 'profile.html', context)
     else: 
@@ -290,6 +311,22 @@ def add_job_interest(request, user_id):
 def delete_job_interest(request, pos_id, user_id):
     this_pos = Position.objects.get(id=pos_id)
     this_pos.delete()
+    return redirect(f'/job/profile/{user_id}')
+
+def add_loc_interest(request, user_id):
+    this_user = User.objects.get(id=user_id)
+    this_state = State.objects.create(abbr=request.POST['state'])
+    this_loc_int = Location.objects.create(
+        city = request.POST['city'],
+        state = this_state
+    )
+    # this_loc_int.state.add(request.POST['state'])
+    this_loc_int.loc_saves.add(this_user)
+    return redirect(f'/job/profile/{user_id}')
+
+def delete_loc_interest(request, loc_id, user_id):
+    this_loc = Location.objects.get(id=loc_id)
+    this_loc.delete()
     return redirect(f'/job/profile/{user_id}')
 
 # following method MOSTLY from: 
