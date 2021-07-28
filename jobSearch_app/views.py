@@ -28,7 +28,13 @@ def home(request, logged_user):
     
     loc_interests = ['']
     for loc in logged_user.user_loc_saves.all():
-        loc_interests.append(f"{loc.city}, {loc.state.abbr}")
+        if loc_interests[0] == '':
+            loc_interests.pop(0)
+            loc_interests.append(f"{loc.city}")
+            loc_interests.append(f"{loc.state}")
+        else:
+            loc_interests.append(f"{loc.city}")
+            loc_interests.append(f"{loc.state}")
     print(loc_interests)
     filter_loc = (Q(location__contains=key_loc) for key_loc in loc_interests)
     loc_query = reduce(operator.or_, filter_loc)
