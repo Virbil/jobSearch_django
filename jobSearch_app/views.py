@@ -13,7 +13,8 @@ import ast
 
 @validate_request
 def home(request, logged_user):
-    jobs = Job.objects.exclude(dislikes=logged_user)
+    jobs = Job.objects.exclude(dislikes=logged_user).order_by('-post_date')
+    # contains job_interests.all().values()
     for j in jobs:
         j.job_desc = ast.literal_eval(j.job_desc)
         j.summary = j.summary.split(";")
@@ -227,7 +228,7 @@ def interview_helper_info_delete(request, user_id, info_provided, post_id):
             delete_general = General.objects.get(id = post_id)
             delete_general.delete()
 
-        return redirect(f'/job/interview_helper/{{user_id}}')
+        return redirect(f'/job/interview_helper/{user_id}')
 
     else:
         return redirect('/')

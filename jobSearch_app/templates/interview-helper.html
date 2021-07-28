@@ -65,9 +65,11 @@
                                     <div class="form-group">
                                         <textarea class="form-control border mt-5" name="elevator_pitch_edit" id="elevator_pitch_edit">{{ pitch.elevator_pitch }}</textarea>
                                     </div>
-                                    <button class="btn btn-warning" type="submit">Update</button>
+                                    <div class="d-flex justify-content-center">
+                                        <button class="btn btn-warning" type="submit">Update</button>
+                                        <button class="btn btn-danger" type="submit"><a href="/job/interview_helper/{{user.id}}/elevator_pitch/delete/{{ pitch.id }}">Delete</a></button>
+                                    </div>
                                 </form>
-                                <button class="btn btn-danger" type="submit"><a href="/job/interview_helper/{{user.id}}/elevator_pitch/delete/{{ pitch.id }}">Delete</a></button>
                             {% endfor %}
                             
                         </div>
@@ -93,8 +95,10 @@
                                     <div class="form-group">
                                         <textarea class="form-control border mt-5" name="str_weak_edit" id="str_weak_edit">{{ s_w.str_weak }}</textarea>
                                     </div>
-                                    <button class="btn btn-warning" type="submit">Update</button>
-                                    <button class="btn btn-danger" type="submit"><a href="/job/interview_helper/{{user.id}}/str_weak/delete/{{ s_w.id }}">Delete</a></button>
+                                    <div class="d-flex justify-content-center">
+                                        <button class="btn btn-warning" type="submit">Update</button>
+                                        <button class="btn btn-danger" type="submit"><a href="/job/interview_helper/{{user.id}}/str_weak/delete/{{ s_w.id }}">Delete</a></button>
+                                    </div>
                                 </form>
                             {% endfor %}
 
@@ -120,8 +124,10 @@
                                     <div class="form-group">
                                         <textarea class="form-control border mt-5" name="accomplishments_edit" id="accomplishments_edit">{{ a.accomplishments }}</textarea>
                                     </div>
-                                    <button class="btn btn-warning" type="submit">Update</button>
-                                    <button class="btn btn-danger" type="submit"><a href="/job/interview_helper/{{user.id}}/accomplishments/delete/{{ a.id }}">Delete</a></button>
+                                    <div class="d-flex justify-content-center">
+                                        <button class="btn btn-warning" type="submit">Update</button>
+                                        <button class="btn btn-danger" type="submit"><a href="/job/interview_helper/{{user.id}}/accomplishments/delete/{{ a.id }}">Delete</a></button>
+                                    </div>
                                 </form>
                             {% endfor %}
                         </div>
@@ -146,8 +152,10 @@
                                     <div class="form-group">
                                         <textarea class="form-control border mt-5" name="common_qa_edit" id="common_qa_edit">{{ qa.common_qa }}</textarea>
                                     </div>
-                                    <button class="btn btn-warning" type="submit">Update</button>
-                                    <button class="btn btn-danger" type="submit"><a href="/job/interview_helper/{{user.id}}/accomplishments/delete/{{ qa.id }}">Delete</a></button>
+                                    <div class="d-flex justify-content-center">
+                                        <button class="btn btn-warning" type="submit">Update</button>
+                                        <button class="btn btn-danger" type="submit"><a href="/job/interview_helper/{{user.id}}/accomplishments/delete/{{ qa.id }}">Delete</a></button>
+                                    </div>
                                 </form>
                             {% endfor %}
                         </div>
@@ -172,8 +180,10 @@
                                     <div class="form-group">
                                         <textarea class="form-control border mt-5" id="general_edit">{{ g.common_qa }}</textarea>
                                     </div>
-                                    <button class="btn btn-warning" type="submit">Update</button>
-                                    <button class="btn btn-danger" type="submit"><a href="/job/interview_helper/{{user.id}}/accomplishments/delete/{{ g.id }}">Delete</a></button>
+                                    <div class="d-flex justify-content-center">
+                                        <button class="btn btn-warning" type="submit">Update</button>
+                                        <button class="btn btn-danger" type="submit"><a href="/job/interview_helper/{{user.id}}/accomplishments/delete/{{ g.id }}">Delete</a></button>
+                                    </div>
                                 </form>
                             {% endfor %}
                         </div>
