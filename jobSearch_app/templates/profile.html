@@ -77,7 +77,7 @@
                                     class="badge badge-pill badge-light">X</a></span> -->
                         </div>
                     </div>
-                    <div class=" offset-2 col-sm-8">
+                    <div class="col-sm-12">
                         <form class="d-flex justify-content-center" action="/job/job_interest/add/{{user.id}}" method="POST">
                             {%csrf_token%}
                             <input class="form-control" type="text" placeholder="Add Job Interest" name="title">
@@ -105,7 +105,7 @@
                                     class="badge badge-pill badge-light">X</a></span> -->
                         </div>
                     </div>
-                    <div class=" offset-2 col-sm-8">
+                    <div class="col-sm-12">
                         <form class="d-flex justify-content-center" action="/job/loc_interest/add/{{user.id}}" method="POST">
                             {%csrf_token%}
                             <input class="form-control" type="text" placeholder="City" name="city">
@@ -127,7 +127,7 @@
 
             <div class="row justify-content-center m-5">
                 <h1>My Prospects</h1>
-                <div class="row col-md-12 mt-4 p-3 text-left border border-secondary shadow">
+                <!-- <div class="row col-md-12 mt-4 p-3 text-left border border-secondary shadow">
                     <div class="col-md-7">
                         <a href="#">
                             <h3>Job Title{{this_job.job_title.title}}</h3>
@@ -161,17 +161,32 @@
                         <p> <span class="text-dark">*date note made*</span> - Check up reminders set up for 7 days</p>
                         <a href="#"><i class="bi bi-plus-lg"></i><h6 class="text-decoration-underline" >Notes </h6></a>
                     </div>
+                </div> -->
+
+                {% for job in job_likes %}
+                <div class="row m-2 shadow">
+                    
+                    {% include 'job-tile.html' %}
+                    <div class="col-md-6 m-2">
+                        <p>Status:</p>
+                        <p> <span class="text-dark">*date note made*</span> - Applied 2 days ago. Wating to hear back.</p>
+                        <p> <span class="text-dark">*date note made*</span> - Check up reminders set up for 7 days</p>
+                        <a href="#"><i class="bi bi-plus-lg"></i><h6 class="text-decoration-underline" >Notes </h6></a>
+                    </div>
+                    
                 </div>
+                
+                {% endfor %}
 
 
 
-                <div class="col-4">
+                <!-- <div class="col-4">
                     <ul>
                         {% for job in user.job_likes.all %}
                         <li>{{ job.job_title.title }}</li>
                         {% endfor %}
                     </ul>
-                </div>
+                </div> -->
             </div>
 
         </main>

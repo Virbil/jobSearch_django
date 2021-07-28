@@ -135,9 +135,18 @@ def profile(request, user_id):
     if 'userid' in request.session:
         logged_user = User.objects.get(id=user_id)
         remote_filter= logged_user.user_loc_saves.filter(city="remote")
+        job_likes = logged_user.job_likes.all()      
+        for j in job_likes:
+            if j.summary:
+                if j.summary[-1] == ';':
+                    j.summary = j.summary.split(";")
+                    j.summary.pop()
+                if j.summary[0] == '[':
+                    j.summary = ast.literal_eval(j.summary)
         context = {
-            "user": User.objects.get(id=user_id),
-            'remote_filter': remote_filter
+            "user": logged_user,
+            'remote_filter': remote_filter,
+            'job_likes': job_likes,
         }
         return render(request, 'profile.html', context)
     else: 
