@@ -51,17 +51,32 @@
                     </a>
                 </div>
             </div>
-
-            <div class="row justify-content-center m-5">
-                <h1>Jobs liked</h1>
-                <div class="col-4">
-                    <ul>
-                        {% for job in user.job_likes.all %}
-                            <li>{{ job.job_title.title }}</li>
-                        {% endfor %}
-                    </ul>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <h3>Positions Saved</h3>
+                    {% include 'new-position-modal.html' %}
+                    {% for pos in user.user_pos_saves.all %}
+                    <p>{{pos.title}}</p>
+                    {% endfor %}
+                </div>
+                <div class="col-md-6">
+                    <h3>Locations Saved</h3>
                 </div>
             </div>
+            <div class="row">
+                <h1>Jobs liked</h1>
+            </div>
+            {% for job in job_likes %}
+            {% if forloop.counter0|divisibleby:2 %}
+            <div class="row d-flex justify-content-evenly m-2">
+                {% include 'job-tile.html' %}
+            {% else %}
+                {% include 'job-tile.html' %}
+            </div>
+            {% endif %}
+            {% endfor %}
+            
 
         </main>
     </div>

@@ -136,7 +136,6 @@ def parse_post_date(post_date, today):
     today = datetime.strptime(today, '%Y-%m-%d')
     days = timedelta(days=days_ago)
     date_posted = today - days
-    print(date_posted)
     return date_posted.strftime('%Y-%m-%d')
 
 def get_min_max_salary(salary):

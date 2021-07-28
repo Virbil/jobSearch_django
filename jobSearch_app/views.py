@@ -83,7 +83,6 @@ def job_info(request, job_id):
         this_job.job_desc = ast.literal_eval(this_job.job_desc)
         this_job.summary = this_job.summary.split(";")
         this_job.summary.pop()
-        print(this_job.job_desc)
         context = {
             'this_job': this_job,
             'this_user': this_user,
@@ -103,9 +102,18 @@ def calendar(request, user_id):
 
 def profile(request, user_id):
     if 'userid' in request.session:
-
+        user = User.objects.get(id=user_id)
+        job_likes = user.job_likes.all()      
+        for j in job_likes:
+            if j.summary:
+                if j.summary[-1] == ';':
+                    j.summary = j.summary.split(";")
+                    j.summary.pop()
+                if j.summary[0] == '[':
+                    j.summary = ast.literal_eval(j.summary)
         context = {
-            "user": User.objects.get(id=user_id),
+            "user": user,
+            'job_likes' : job_likes,
         }
         return render(request, 'profile.html', context)
     else: 
@@ -175,3 +183,18 @@ def delete_note(request, job_id, note_id):
         this_note.delete()
         return redirect(f'/job/{job_id}')
     return redirect("/job")
+
+@validate_request
+def new_position(request, logged_user):
+    print(logged_user)
+    if request.method == "POST":
+        title = request.POST['new-pos']
+        check = Position.objects.filter(title=title)
+        if check:
+            new_pos = check[0]
+        else:
+            new_pos = Position.objects.create(title=title)
+        logged_user.user_pos_saves.add(new_pos)
+        # logged_user.user_pos_saves.add(new_pos)
+    
+    return redirect(f"/job/profile/{logged_user.id}")

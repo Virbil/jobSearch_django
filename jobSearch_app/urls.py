@@ -18,4 +18,6 @@ urlpatterns = [
     path('interview_helper/<int:user_id>', views.interview_helper),
     # new path for interview helper using AJAX
     path('interview_helper/<int:user_id>/<str:info_provided>', views.interview_helper_info),
+    # paths for position/location crud 
+    path('position/new', views.new_position, name='new_position')
 ]
