@@ -15,12 +15,12 @@ from django.core.files.storage import FileSystemStorage
 
 
 @validate_request
-def home(request, logged_user):
+def home(request, logged_user, jobs=None):
     # filter logic that uses you interests to show you jobs that contain those interest words in the description
     job_interests = ['']
     for value in logged_user.user_pos_saves.all():
         job_interests.append(value.title)
-    print(job_interests)
+    # print(job_interests)
     filter_job= (Q(job_desc__contains=key_word) for key_word in job_interests)
     job_query = reduce(operator.or_, filter_job)
     # end of interest logic
@@ -34,19 +34,26 @@ def home(request, logged_user):
         else:
             loc_interests.append(f"{loc.city}")
             loc_interests.append(f"{loc.state}")
-    print(loc_interests)
+    # print(loc_interests)
     filter_loc = (Q(location__contains=key_loc) for key_loc in loc_interests)
     loc_query = reduce(operator.or_, filter_loc)
-
-    jobs = Job.objects.filter(job_query).filter(loc_query).exclude(dislikes=logged_user).order_by('-post_date')
+    if not jobs:
+        # jobs = Job.objects.filter(job_query).filter(loc_query).exclude(dislikes=logged_user).order_by('-post_date')
+        jobs = Job.objects.exclude(dislikes=logged_user).order_by('-post_date')
+    else:
+        jobs = jobs
+    
     for j in jobs:
         j.job_desc = ast.literal_eval(j.job_desc)
-        j.summary = j.summary.split(";")
-        j.summary.pop()
-        print(j.location)
+        if j.summary:
+            if j.summary[-1] == ";":
+                j.summary = j.summary.split(";")
+                j.summary.pop()
+        
+        # print(j.location)
     
-    for state in Location.objects.all():
-        print(state.state.abbr)
+    # for state in Location.objects.all():
+    #     print(state.state.abbr)
     
 
     context = {
@@ -55,22 +62,33 @@ def home(request, logged_user):
     }
     return render(request, "home.html", context)
 
-def find_jobs(request):
-    positions = Position.objects.all()
-    locations = Location.objects.all()
-    position = positions[2].__str__()
-    location = locations[0].__str__()
-    print(position, location)
+@validate_request
+def find_jobs(request, logged_user):
+    # positions = Position.objects.all()
+    # locations = Location.objects.all()
+    # position = positions[2].__str__()
+    # location = locations[0].__str__()
+    # print(position, location)
+    position = request.GET['position']
+    location = request.GET['location']
     
     job_dict = get_jobs(position=position, location=location)
+    job_ids = []
     for job in job_dict.values():
         pos = Position.objects.filter(title=job['JobTitle'])
         if not pos:
             pos = Position.objects.create(title=job["JobTitle"])
         else:
             pos = pos[0]
-        Job.objects.create(job_title=pos, company=job['Company'], location=job['Location'], salary_min=job['salary_min'], salary_max=job['salary_max'], job_url=job['JobUrl'], job_desc=job['JobDesc'], summary=job['Summary'], post_date=job['PostDate'])
-    return redirect("/job")
+        job = Job.objects.create(job_title=pos, company=job['Company'], location=job['Location'], salary_min=job['salary_min'], salary_max=job['salary_max'], job_url=job['JobUrl'], job_desc=job['JobDesc'], summary=job['Summary'], post_date=job['PostDate'])
+        job_ids.append(job.id)
+
+    jobs = Job.objects.filter(id__in=job_ids)
+    context = {
+        "user": logged_user,
+        'jobs': jobs,
+    }
+    return render(request, 'home.html', context)
 
 @validate_request
 def like(request, user):

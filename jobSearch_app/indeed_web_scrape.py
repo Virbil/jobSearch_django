@@ -75,10 +75,8 @@ def get_jobs(position, location):
     records = []
     url, headers = get_url_and_headers(position, location)
     while True:
-        print(url)
         response = requests.get(url)
         soup = BeautifulSoup(response.text, 'html.parser')
-        print(soup.text)
         cards = soup.find_all('div', 'mosaic-provider-jobcards')
         for card in cards:
             
@@ -136,7 +134,6 @@ def parse_post_date(post_date, today):
     today = datetime.strptime(today, '%Y-%m-%d')
     days = timedelta(days=days_ago)
     date_posted = today - days
-    print(date_posted)
     return date_posted.strftime('%Y-%m-%d')
 
 def get_min_max_salary(salary):

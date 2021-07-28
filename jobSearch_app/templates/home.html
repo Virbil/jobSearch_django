@@ -33,7 +33,33 @@
         <main role="main" class="inner cover">
             <div class="jumbotron h2">
                 <h1 class="cover-heading">Welcome, {{ user.first_name }} {{ user.last_name }}</h1>
-                <a class="btn btn-link text-primary" href="/job/find_jobs">Click this to add jobs from indeed to our database.  We can make this a post or an automated scrape on some interval.</a>
+                <!-- <a class="btn btn-link text-primary" href="/job/find_jobs">Click this to add jobs from indeed to our database.  We can make this a post or an automated scrape on some interval.</a> -->
+                <h5>Search job positions from your desired positions and locations made on your profile page.</h5>
+                
+                    <form action="{% url 'find_jobs' %}" method="get">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <label class="h5" for="location">Position:</label>
+                                <select class="form-select " name="position" id="position">
+                                    {% for pos in user.user_pos_saves.all %}
+                                    <option>{{ pos.title }}</option>
+                                    {% endfor %}
+                                    
+                                </select>
+                            </div>
+                            <div class="col-md-5">
+                                <label class="h5" for="location">Location:</label>
+                                <select class="form-select" name="location" id="location">
+                                    {% for loc in user.user_loc_saves.all %}
+                                    <option>{{loc}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-2 mt-4">
+                                <input class="btn btn-info rounded shadow" type="submit" value="Go">
+                            </div>
+                        </div>
+                    </form>
             </div>
             {% for job in jobs%}
             {% if forloop.counter0|divisibleby:2 %}
