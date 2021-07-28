@@ -23,5 +23,7 @@ urlpatterns = [
     # profile page Job interests,
     path('job_interest/add/<int:user_id>', views.add_job_interest),
     path('job_interest/<int:pos_id>/delete/<int:user_id>', views.delete_job_interest),
+    path('loc_interest/add/<int:user_id>', views.add_loc_interest),
+    path('loc_interest/<int:loc_id>/delete/<int:user_id>', views.delete_loc_interest),
 
 ]
