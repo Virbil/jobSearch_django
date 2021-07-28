@@ -10,15 +10,27 @@ import requests
 import json
 from .indeed_web_scrape import get_jobs
 import ast
+import operator
+from django.db.models import Q
+from functools import reduce
+
 
 @validate_request
 def home(request, logged_user):
-    jobs = Job.objects.exclude(dislikes=logged_user).order_by('-post_date')
-    # contains job_interests.all().values()
+    # filter logic that uses you interests to show you jobs that contain those interest words in the description
+    interests = []
+    for value in logged_user.user_pos_saves.all():
+        interests.append(value.title)
+    print(interests)
+    filter_for= (Q(job_desc__contains=key_word) for key_word in interests)
+    query = reduce(operator.or_, filter_for)
+    # end of interest logic
+    jobs = Job.objects.all().filter(query).exclude(dislikes=logged_user).order_by('-post_date')
     for j in jobs:
         j.job_desc = ast.literal_eval(j.job_desc)
         j.summary = j.summary.split(";")
         j.summary.pop()
+
     context = {
         "user": logged_user,
         'jobs': jobs,
