@@ -17,15 +17,17 @@ def get_url_and_headers(position, location):
     location = location.replace(' ', '+')
     location = location.replace(",","%2C")
     headers = {
-    'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-    'accept-encoding': 'gzip, deflate, br',
-    'accept-language': 'en-US,en;q=0.9',
-    'cache-control': 'max-age=0',
-    'sec-fetch-dest': 'document',
-    'sec-fetch-mode': 'navigate',
-    'sec-fetch-site': 'none',
-    'sec-fetch-user': '?1',
-    'upgrade-insecure-requests': '1',
+    # 'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+    # 'accept-encoding': 'gzip, deflate, br',
+    # 'accept-language': 'en-US,en;q=0.9',
+    # 'cache-control': 'max-age=0',
+    # 'sec-fetch-dest': 'document',
+    # 'sec-fetch-mode': 'navigate',
+    # 'sec-fetch-site': 'none',
+    # 'sec-fetch-user': '?1',
+    
+    # 'upgrade-insecure-requests': '1',
+    'referer':'https://www.google.com/',
     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.67 Safari/537.36 Edg/87.0.664.47'
 }
     url = template.format(position, location)
@@ -75,7 +77,7 @@ def get_jobs(position, location):
     records = []
     url, headers = get_url_and_headers(position, location)
     while True:
-        response = requests.get(url)
+        response = requests.get(url, headers=headers)
         soup = BeautifulSoup(response.text, 'html.parser')
         cards = soup.find_all('div', 'mosaic-provider-jobcards')
         for card in cards:
