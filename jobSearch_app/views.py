@@ -58,11 +58,6 @@ def home(request, logged_user, jobs=None):
 
 @validate_request
 def find_jobs(request, logged_user):
-    # positions = Position.objects.all()
-    # locations = Location.objects.all()
-    # position = positions[2].__str__()
-    # location = locations[0].__str__()
-    # print(position, location)
     position = request.GET['position']
     location = request.GET['location']
     
@@ -74,18 +69,22 @@ def find_jobs(request, logged_user):
             pos = Position.objects.create(title=job["JobTitle"])
         else:
             pos = pos[0]
-        job = Job.objects.create(
-            job_title=pos, 
-            company=job['Company'], 
-            location=job['Location'], 
-            salary_min=job['salary_min'], 
-            salary_max=job['salary_max'], 
-            job_url=job['JobUrl'], 
-            job_desc=job['JobDesc'], 
-            summary=job['Summary'], 
-            post_date=job['PostDate']
-        )
-        job_ids.append(job.id)
+        check = Job.objects.filter(job_url=job['JobUrl'])
+        if check:
+            job_ids.append(check[0].id)
+        else:
+            job = Job.objects.create(
+                job_title=pos, 
+                company=job['Company'], 
+                location=job['Location'], 
+                salary_min=job['salary_min'], 
+                salary_max=job['salary_max'], 
+                job_url=job['JobUrl'], 
+                job_desc=job['JobDesc'], 
+                summary=job['Summary'], 
+                post_date=job['PostDate']
+            )
+            job_ids.append(job.id)
 
     jobs = Job.objects.filter(id__in=job_ids)
     for j in jobs:
@@ -161,13 +160,10 @@ def post_job(request, user_id):
     if 'userid' in request.session:
         user = User.objects.get(id = user_id)
         location = request.POST['city'].title() + ',' + request.POST['state'].upper()
-        
-
         new_position = Position.objects.create(
             title = request.POST['job_title'],
         )
         new_position.pos_saves.add(user)
-
         new_job = Job.objects.create(
             job_title = new_position,
             company = request.POST['company'],
