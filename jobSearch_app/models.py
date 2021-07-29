@@ -38,7 +38,7 @@ class Position(models.Model):
 
 class Qualification(models.Model): 
     name = models.CharField(max_length=45)
-    duration = models.IntegerField(default=None)
+    duration = models.IntegerField(default=None, null=True)
     required = models.BooleanField(default=False)
 
     def __str__(self):
