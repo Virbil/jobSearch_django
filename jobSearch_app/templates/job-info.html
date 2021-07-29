@@ -81,6 +81,15 @@
             <div class="row p-3 mt-4">
                 <div class="col-md-12  p-3 text-left border border-secondary shadow">
                     <div class="col-lg-6 offset-3">
+                        <div class="col-12 text-center">
+                            {%if messages%}
+                            <ul class="errors">
+                                {%for message in messages%}
+                                    <li class="text-danger ">{{message}}</li>
+                                {%endfor%}
+                            </ul>
+                            {% endif %}
+                        </div>
                         <form class="d-flex" action="/job/{{this_job.id}}/note" method="POST">
                             {%csrf_token%}
                             <input class="form-control" type="text" placeholder="Add a Note" name="desc">

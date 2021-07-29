@@ -161,11 +161,13 @@ def create_job(request, user_id):
 def post_job(request, user_id):
     if 'userid' in request.session:
         user = User.objects.get(id = user_id)
-        errors = Job.create_job_validator(request.POST)
+        
+        errors = Job.objects.create_job_validator(request.POST)
         if len(errors) > 0:
             for value in errors.values():
                 messages.error(request, value)
-            return redirect(f'/job/interview_helper/{user.id}')
+            return redirect(f'/job/create/{user.id}')
+
         location = request.POST['city'].title() + ',' + request.POST['state'].upper()
         new_position = Position.objects.create(
             title = request.POST['job_title'],
@@ -397,11 +399,13 @@ def delete_note(request, job_id, note_id):
 
 def add_job_interest(request, user_id):
     this_user = User.objects.get(id=user_id)
-    errors = Position.create_job_validator(request.POST)
+
+    errors = Position.objects.create_job_interest_validator(request.POST)
     if len(errors) > 0:
         for value in errors.values():
             messages.error(request, value)
-        return redirect(f'/job/interview_helper/{user_id}')
+        return redirect(f'/job/profile/{user_id}')
+
     this_job_int = Position.objects.create(
         title = request.POST['title'],
     )
@@ -417,11 +421,13 @@ def delete_job_interest(request, pos_id, user_id):
 def add_loc_interest(request, user_id):
 
     this_user = User.objects.get(id=user_id)
-    errors = Location.create_job_validator(request.POST)
+
+    errors = Location.objects.create_loc_interest_validator(request.POST)
     if len(errors) > 0:
         for value in errors.values():
             messages.error(request, value)
-        return redirect(f'/job/interview_helper/{user_id}')
+        return redirect(f'/job/profile/{user_id}')
+
     this_state = State.objects.create(abbr=request.POST['state'])
     this_loc_int = Location.objects.create(
         city = request.POST['city'],

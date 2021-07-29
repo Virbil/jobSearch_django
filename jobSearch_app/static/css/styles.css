@@ -97,3 +97,7 @@ img {
 .job-title {
     margin-left: -30px;
 }
+
+.errors {
+    list-style-type: none;
+}
