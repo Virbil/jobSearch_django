@@ -271,22 +271,22 @@ def interview_helper_info_update(request, user_id, info_provided, post_id):
             if info_provided == 'str_weak':
                 edit_str_weak = Strength_Weakness.objects.get(id = post_id)
                 edit_str_weak.str_weak = request.POST['str_weak_edit']
-                edit_elevator_pitch.save()
+                edit_str_weak.save()
 
             if info_provided == 'accomplishments':
                 edit_accomplishment = Accomplishments.objects.get(id = post_id)
                 edit_accomplishment.accomplishments = request.POST['accomplishments_edit']
-                edit_elevator_pitch.save()
+                edit_accomplishment.save()
 
             if info_provided == 'common_qa':
                 edit_common_qa = CommonQA.objects.get(id = post_id)
                 edit_common_qa.common_qa = request.POST['common_qa_edit']
-                edit_elevator_pitch.save()
+                edit_common_qa.save()
 
             if info_provided == 'general':
                 edit_general = General.objects.get(id = post_id)
                 edit_general.general = request.POST['general_edit']
-                edit_elevator_pitch.save()
+                edit_general.save()
 
             return redirect(f'/job/interview_helper/{user_id}')
 
