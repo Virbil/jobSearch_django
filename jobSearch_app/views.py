@@ -15,6 +15,9 @@ from functools import reduce
 from django.core.files.storage import FileSystemStorage
 
 
+
+
+
 @validate_request
 def home(request, logged_user, jobs=None):
     # filter logic that uses you interests to show you jobs that contain those interest words in the description
@@ -148,7 +151,6 @@ def job_info(request, job_id):
 
 def create_job(request, user_id):
     if 'userid' in request.session:
-                                    
         context = {
             "user": User.objects.get(id=user_id),
         }
@@ -159,11 +161,13 @@ def create_job(request, user_id):
 def post_job(request, user_id):
     if 'userid' in request.session:
         user = User.objects.get(id = user_id)
+        
         errors = Job.objects.create_job_validator(request.POST)
         if len(errors) > 0:
             for value in errors.values():
                 messages.error(request, value)
             return redirect(f'/job/create/{user.id}')
+
         location = request.POST['city'].title() + ',' + request.POST['state'].upper()
         new_position = Position.objects.create(
             title = request.POST['job_title'],
@@ -216,7 +220,6 @@ def profile(request, user_id):
 def interview_helper(request, user_id):
     if 'userid' in request.session:
         user = User.objects.get(id=user_id)
-
         context = {
             "user": User.objects.get(id=user_id),
             'elevator_pitch': ElevatorPitch.objects.filter(creator = user),
@@ -232,7 +235,6 @@ def interview_helper(request, user_id):
 def interview_helper_info(request, user_id, info_provided):
     if 'userid' in request.session:
         user = User.objects.get(id=user_id)
-
         if request.method == "POST":
             if info_provided == 'elevator_pitch':
                 errors = ElevatorPitch.objects.create_interview_helper_validator(request.POST)
@@ -289,7 +291,6 @@ def interview_helper_info(request, user_id, info_provided):
                     creator = user,
                     general = request.POST['general']
                 )
-
             return redirect(f'/job/interview_helper/{user.id}')
 
     else:
@@ -398,11 +399,13 @@ def delete_note(request, job_id, note_id):
 
 def add_job_interest(request, user_id):
     this_user = User.objects.get(id=user_id)
+
     errors = Position.objects.create_job_interest_validator(request.POST)
     if len(errors) > 0:
         for value in errors.values():
             messages.error(request, value)
         return redirect(f'/job/profile/{user_id}')
+
     this_job_int = Position.objects.create(
         title = request.POST['title'],
     )
@@ -418,11 +421,13 @@ def delete_job_interest(request, pos_id, user_id):
 def add_loc_interest(request, user_id):
 
     this_user = User.objects.get(id=user_id)
+
     errors = Location.objects.create_loc_interest_validator(request.POST)
     if len(errors) > 0:
         for value in errors.values():
             messages.error(request, value)
         return redirect(f'/job/profile/{user_id}')
+
     this_state = State.objects.create(abbr=request.POST['state'])
     this_loc_int = Location.objects.create(
         city = request.POST['city'],

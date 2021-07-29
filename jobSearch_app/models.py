@@ -2,7 +2,6 @@ from django.db import models
 from login_reg_app.models import User
 
 class JobManager(models.Manager):
-
     def position_create_manager(self, postData):
         errors = {}
         if len(postData['position']) < 5:
@@ -10,11 +9,8 @@ class JobManager(models.Manager):
         return errors
 
 class FormManager(models.Manager):
-
-
     def create_note_validator(self, postData):
-        errors = {}
-    
+        errors = {}    
         if len(postData['desc']) < 1:
             errors['empty'] = "Note cannot be blank"
         if len(postData['desc']) > 255:
@@ -29,6 +25,7 @@ class FormManager(models.Manager):
                 errors['elevator_empty'] = "Elevator Pitch cannot be blank"
             if len(postData['elevator-pitch']) > 255:
                 errors['elevator_long'] = "Elevator Pitch cannot be longer than 255 characters"
+                
         if 'str_weak' in postData:
             if len(postData['str_weak']) < 1:
                 errors['str_weak_empty'] = "Strengths and Weaknesses cannot be blank"
@@ -47,7 +44,6 @@ class FormManager(models.Manager):
                 errors['common_qa_empty'] = "Common Q&A cannot be blank"
             if len(postData['common_qa']) > 255:
                 errors['common_qa_long'] = "Common Q&A cannot be longer than 255 characters"
-        return errors
 
         if "general" in postData:
             print("it is catching this")
@@ -101,7 +97,6 @@ class FormManager(models.Manager):
         if len(postData['post_date']) < 1:
             errors['post_date_empty'] = "Post date cannot be blank"
 
-
         if len(postData['job_url']) < 1:
             errors['job_url_empty'] = "URL cannot be blank"
 
@@ -120,8 +115,6 @@ class FormManager(models.Manager):
             errors['description_empty'] = "Description cannot be blank"
 
         return errors
-
-
 
 
 class State(models.Model):
@@ -226,5 +219,3 @@ class General(models.Model):
     created_at = models.DateField(auto_now=True)
     updated_at = models.DateField(auto_now_add=True)
     objects = FormManager()
-
-
