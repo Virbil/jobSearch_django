@@ -119,6 +119,7 @@ def get_full_job_desc(url):
         for br in desc_div.find_all("br"):
             br.replace_with("\n")
         job_desc = desc_div.text.split("\n")
+        print(job_desc)
     
     return title, job_desc
 
