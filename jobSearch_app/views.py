@@ -1,4 +1,5 @@
 from django.contrib.messages.api import info
+from django.db.models.fields import DurationField
 from django.http.response import JsonResponse
 from jobSearch_app.decorators import validate_request
 from django.contrib import messages
@@ -38,8 +39,8 @@ def home(request, logged_user, jobs=None):
     filter_loc = (Q(location__contains=key_loc) for key_loc in loc_interests)
     loc_query = reduce(operator.or_, filter_loc)
     if not jobs:
-        # jobs = Job.objects.filter(job_query).filter(loc_query).exclude(dislikes=logged_user).order_by('-post_date')
-        jobs = Job.objects.exclude(dislikes=logged_user).order_by('-post_date')
+        jobs = Job.objects.filter(job_query).filter(loc_query).exclude(dislikes=logged_user).order_by('-post_date')
+        # jobs = Job.objects.exclude(dislikes=logged_user).order_by('-post_date')
     else:
         jobs = jobs
     for j in jobs:
@@ -73,7 +74,17 @@ def find_jobs(request, logged_user):
             pos = Position.objects.create(title=job["JobTitle"])
         else:
             pos = pos[0]
-        job = Job.objects.create(job_title=pos, company=job['Company'], location=job['Location'], salary_min=job['salary_min'], salary_max=job['salary_max'], job_url=job['JobUrl'], job_desc=job['JobDesc'], summary=job['Summary'], post_date=job['PostDate'])
+        job = Job.objects.create(
+            job_title=pos, 
+            company=job['Company'], 
+            location=job['Location'], 
+            salary_min=job['salary_min'], 
+            salary_max=job['salary_max'], 
+            job_url=job['JobUrl'], 
+            job_desc=job['JobDesc'], 
+            summary=job['Summary'], 
+            post_date=job['PostDate']
+        )
         job_ids.append(job.id)
 
     jobs = Job.objects.filter(id__in=job_ids)
@@ -150,37 +161,31 @@ def post_job(request, user_id):
     if 'userid' in request.session:
         user = User.objects.get(id = user_id)
         location = request.POST['city'].title() + ',' + request.POST['state'].upper()
-        print(request.POST['job_title'])
-        print(request.POST['company'])
-        print(request.POST['post_date'])
-        print(request.POST['min'])
-        print(request.POST['max'])
-        print(request.POST['job_url'])
-        print(request.POST['summary'])
-        print(request.POST['description'])
-        print(request.POST['required'])
-        # new_position = Position.objects.create(
-        #     title = request.POST['job_title'],
-        # )
-        # new_position.pos_saves.add(user)
+        
 
-        # new_job = Job.objects.create(
-        #     job_title = new_position,
-        #     company = request.POST['company'],
-        #     location = location,
-        #     post_date = request.POST['post_date'],
-        #     salary_min = request.POST['min'],
-        #     salary_max = request.POST['max'],
-        #     job_url = request.POST['job_url'],
-        #     summary = request.POST['summary'],
-        #     job_desc = request.POST['description'],
-        # )
+        new_position = Position.objects.create(
+            title = request.POST['job_title'],
+        )
+        new_position.pos_saves.add(user)
 
-        # qualifications = Qualification.objects.create(
-        #     name = request.POST['required']
-        # )
-        # new_job.qualifications.add(qualifications)
-        # new_job.likes.add(user)
+        new_job = Job.objects.create(
+            job_title = new_position,
+            company = request.POST['company'],
+            location = location,
+            post_date = request.POST['post_date'],
+            salary_min = request.POST['min'],
+            salary_max = request.POST['max'],
+            job_url = request.POST['job_url'],
+            summary = request.POST['summary'],
+            job_desc = request.POST['description'],
+        )
+
+        qualifications = Qualification.objects.create(
+            name = request.POST['required'],
+            duration = 1
+        )
+        new_job.qualifications.add(qualifications)
+        new_job.likes.add(user)
 
         return redirect('/job')
     else: 
