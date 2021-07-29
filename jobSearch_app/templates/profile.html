@@ -64,7 +64,8 @@
                         <h5 class="row justify-content-center mb-3">Job Position Interests</h5>
                         <div class="col-sm-9">
                             {%for pos in user.user_pos_saves.all%}
-                            <span class="badge badge-pill badge-dark mb-2">{{pos.title}} <a href="/job/job_interest/{{pos.id}}/delete/{{user.id}}"
+                            <span class="badge badge-pill badge-dark mb-2">{{pos.title}} <a
+                                    href="/job/job_interest/{{pos.id}}/delete/{{user.id}}"
                                     class="badge badge-pill badge-light">X</a></span>
                             {%endfor%}
                             <!-- <span class="badge badge-pill badge-dark">SDE <a href="#"
@@ -78,7 +79,8 @@
                         </div>
                     </div>
                     <div class="col-sm-12">
-                        <form class="d-flex justify-content-center" action="/job/job_interest/add/{{user.id}}" method="POST">
+                        <form class="d-flex justify-content-center" action="/job/job_interest/add/{{user.id}}"
+                            method="POST">
                             {%csrf_token%}
                             <input class="form-control" type="text" placeholder="Add Job Interest" name="title">
                             <button class="btn btn-info btn-sm" type="submit">Add</button>
@@ -92,22 +94,24 @@
                         <h5 class="row justify-content-center mb-3">Locations</h5>
                         <div class="col-sm-9">
                             {%for loc in user.user_loc_saves.all%}
-                                <span class="badge badge-pill badge-dark mb-2">{{loc.city}}, {{loc.state.abbr}} 
-                                    <a href="/job/loc_interest/{{loc.id}}/delete/{{user.id}}"
-                                        class="badge badge-pill badge-light">X</a>
-                                </span>
+                            <span class="badge badge-pill badge-dark mb-2">{{loc.city}}, {{loc.state.abbr}}
+                                <a href="/job/loc_interest/{{loc.id}}/delete/{{user.id}}"
+                                    class="badge badge-pill badge-light">X</a>
+                            </span>
                             {%endfor%}
                         </div>
                     </div>
                     <div class="col-sm-12">
-                        <form class="d-flex justify-content-center" action="/job/loc_interest/add/{{user.id}}" method="POST">
+                        <form class="d-flex justify-content-center" action="/job/loc_interest/add/{{user.id}}"
+                            method="POST">
                             {%csrf_token%}
-                                <input class="form-control mr-1" type="text" placeholder="City" name="city">
-                                <input class="form-control mr-1" type="text" placeholder="State" name="state">
-                                <button class="btn btn-info btn-sm" type="submit">Add</button>
+                            <input class="form-control mr-1" type="text" placeholder="City" name="city">
+                            <input class="form-control mr-1" type="text" placeholder="State" name="state">
+                            <button class="btn btn-info btn-sm" type="submit">Add</button>
                         </form>
                         {%if not remote_filter%}
-                        <form class="d-flex justify-content-center mt-2" action="/job/loc_interest/add/{{user.id}}" method="POST">
+                        <form class="d-flex justify-content-center mt-2" action="/job/loc_interest/add/{{user.id}}"
+                            method="POST">
                             {%csrf_token%}
                             <div class="form-row">
                                 <input class="form-control mr-1" type="hidden" type="text" value="remote" name="city">
@@ -122,7 +126,14 @@
             </div>
 
             <div class="row justify-content-center m-5">
-                <h1>My Prospects</h1>
+
+                <div class="row mb-3">
+                    <h1>My Prospects</h1>
+                </div>
+                <div class="row">
+                    <h4 class="col-6">Job List</h4>
+                    <h4 class="col-6">Notes</h4>
+                </div>
                 <!-- <div class="row col-md-12 mt-4 p-3 text-left border border-secondary shadow">
                     <div class="col-md-7">
                         <a href="#">
@@ -158,33 +169,61 @@
                         <a href="#"><i class="bi bi-plus-lg"></i><h6 class="text-decoration-underline" >Notes </h6></a>
                     </div>
                 </div> -->
-
-                {% for job in job_likes %}
-                <div class="row m-2 shadow">
-                    
+                <div class="row shadow justify-content-center">
+                    {% for job in job_likes %}
                     {% include 'job-tile.html' %}
-                    <div class="col-md-6 m-2">
+                    <!-- <div class="col-md-6 m-2">
                         <p>Status:</p>
                         <p> <span class="text-dark">*date note made*</span> - Applied 2 days ago. Wating to hear back.</p>
                         <p> <span class="text-dark">*date note made*</span> - Check up reminders set up for 7 days</p>
                         <a href="#"><i class="bi bi-plus-lg"></i><h6 class="text-decoration-underline" >Notes </h6></a>
+                    </div> -->
+
+                    <div class="overflow-auto col-md-6 m-2 " style="max-height: 400px;">
+                        {%for note in job.notes.all%}
+                        {%if note.creator == user%}
+                        <div class="mb-1 p-3 text-left border border-secondary shadow">
+                            <div class="d-flex justify-content-end">
+                                <h5 class="col-8">Date: {{note.updated_at|date}}</h5>
+                                <div class="col-3 float-lg-right">
+                                    <a href="/job/{{this_job.id}}/note_delete/{{note.id}}" class="pl-3">
+                                        <span data-feather="trash-2"></span>
+                                    </a>
+                                    <a style="cursor: pointer;" data-toggle="modal" data-target="#edit-note"
+                                        class="pl-3">
+                                        <span data-feather="edit"></span>
+                                    </a>
+                                    <div class="modal fade" id="edit-note" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header modal-header-colored bg-primary">
+                                                    <h3 class="modal-title form-group">Note for {{this_job.name}}
+                                                    </h3>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form action="{% url 'note_edit' note_id=note.id %}" method="post"
+                                                        id="reviewForm">
+                                                        {% csrf_token %}
+                                                        <label class="font-weight-bold" for="desc">Job:</label>
+                                                        <textarea class="form-control" name="desc"
+                                                            rows="3">{{note.desc}}</textarea>
+                                                </div>
+                                                <input class="btn btn-dark btn-sm" type="submit" value="Submit">
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="ml-3">{{note.desc}}</p>
+                        </div>
+                        {%endif%}
+                        {%endfor%}
                     </div>
-                    
+                    <hr>
+                    {% endfor %}
                 </div>
-                
-                {% endfor %}
-
-
-
-                <!-- <div class="col-4">
-                    <ul>
-                        {% for job in user.job_likes.all %}
-                        <li>{{ job.job_title.title }}</li>
-                        {% endfor %}
-                    </ul>
-                </div> -->
             </div>
-
         </main>
     </div>
 
