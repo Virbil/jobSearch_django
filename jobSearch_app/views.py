@@ -15,6 +15,9 @@ from functools import reduce
 from django.core.files.storage import FileSystemStorage
 
 
+
+
+
 @validate_request
 def home(request, logged_user, jobs=None):
     # filter logic that uses you interests to show you jobs that contain those interest words in the description
@@ -148,7 +151,6 @@ def job_info(request, job_id):
 
 def create_job(request, user_id):
     if 'userid' in request.session:
-        print("Made it to post job")
         context = {
             "user": User.objects.get(id=user_id),
         }
@@ -159,6 +161,11 @@ def create_job(request, user_id):
 def post_job(request, user_id):
     if 'userid' in request.session:
         user = User.objects.get(id = user_id)
+        errors = Job.create_job_validator(request.POST)
+        if len(errors) > 0:
+            for value in errors.values():
+                messages.error(request, value)
+            return redirect(f'/job/interview_helper/{user.id}')
         location = request.POST['city'].title() + ',' + request.POST['state'].upper()
         new_position = Position.objects.create(
             title = request.POST['job_title'],
@@ -211,7 +218,6 @@ def profile(request, user_id):
 def interview_helper(request, user_id):
     if 'userid' in request.session:
         user = User.objects.get(id=user_id)
-
         context = {
             "user": User.objects.get(id=user_id),
             'elevator_pitch': ElevatorPitch.objects.filter(creator = user),
@@ -227,38 +233,62 @@ def interview_helper(request, user_id):
 def interview_helper_info(request, user_id, info_provided):
     if 'userid' in request.session:
         user = User.objects.get(id=user_id)
-
         if request.method == "POST":
             if info_provided == 'elevator_pitch':
-                elevator_pitch = ElevatorPitch.objects.create(
+                errors = ElevatorPitch.objects.create_interview_helper_validator(request.POST)
+                if len(errors) > 0:
+                    for value in errors.values():
+                        messages.error(request, value)
+                    return redirect(f'/job/interview_helper/{user.id}')
+
+                ElevatorPitch.objects.create(
                     creator = user,
                     elevator_pitch = request.POST['elevator-pitch']
                 )
             
             if info_provided == 'str_weak':
-                strengths = Strength_Weakness.objects.create(
+                errors = Strength_Weakness.objects.create_interview_helper_validator(request.POST)
+                if len(errors) > 0:
+                    for value in errors.values():
+                        messages.error(request, value)
+                    return redirect(f'/job/interview_helper/{user.id}')
+                Strength_Weakness.objects.create(
                     creator = user,
                     str_weak = request.POST['str_weak']
                 )
 
             if info_provided == 'accomplishments':
-                accomplishments = Accomplishments.objects.create(
+                errors = Accomplishments.objects.create_interview_helper_validator(request.POST)
+                if len(errors) > 0:
+                    for value in errors.values():
+                        messages.error(request, value)
+                    return redirect(f'/job/interview_helper/{user.id}')
+                Accomplishments.objects.create(
                     creator = user,
                     accomplishments = request.POST['accomplishments']
                 )
 
             if info_provided == 'common_qa':
-                common_qa = CommonQA.objects.create(
+                errors = CommonQA.objects.create_interview_helper_validator(request.POST)
+                if len(errors) > 0:
+                    for value in errors.values():
+                        messages.error(request, value)
+                    return redirect(f'/job/interview_helper/{user.id}')
+                CommonQA.objects.create(
                     creator = user,
                     common_qa = request.POST['common_qa']
                 )
 
             if info_provided == 'general':
-                general = General.objects.create(
+                errors = General.objects.create_interview_helper_validator(request.POST)
+                if len(errors) > 0:
+                    for value in errors.values():
+                        messages.error(request, value)
+                    return redirect(f'/job/interview_helper/{user.id}')
+                General.objects.create(
                     creator = user,
                     general = request.POST['general']
                 )
-
             return redirect(f'/job/interview_helper/{user.id}')
 
     else:
@@ -330,6 +360,11 @@ def interview_helper_info_delete(request, user_id, info_provided, post_id):
 
 def create_note(request, job_id):
     if request.method == 'POST':
+        errors = Note.objects.create_note_validator(request.POST)
+        if len(errors) > 0:
+            for value in errors.values():
+                messages.error(request, value)
+            return redirect(f'/job/{job_id}')
         this_job = Job.objects.get(id=job_id)
         this_user = User.objects.get(id=request.POST['user'])
         Note.objects.create(creator= this_user, job_id=this_job, desc=request.POST['desc'])
@@ -340,6 +375,11 @@ def create_note(request, job_id):
 def note_edit(request, note_id):
     if request.method == "POST":
         this_note = Note.objects.filter(id=note_id)
+        errors = Note.objects.create_note_validator(request.POST)
+        if len(errors) > 0:
+            for value in errors.values():
+                messages.error(request, value)
+            return redirect(f'/job/{this_note.job_id.id}')
         if this_note:
             this_note = this_note[0]
             this_note.desc = request.POST['desc']
@@ -357,6 +397,11 @@ def delete_note(request, job_id, note_id):
 
 def add_job_interest(request, user_id):
     this_user = User.objects.get(id=user_id)
+    errors = Position.create_job_validator(request.POST)
+    if len(errors) > 0:
+        for value in errors.values():
+            messages.error(request, value)
+        return redirect(f'/job/interview_helper/{user_id}')
     this_job_int = Position.objects.create(
         title = request.POST['title'],
     )
@@ -370,7 +415,13 @@ def delete_job_interest(request, pos_id, user_id):
     return redirect(f'/job/profile/{user_id}')
 
 def add_loc_interest(request, user_id):
+
     this_user = User.objects.get(id=user_id)
+    errors = Location.create_job_validator(request.POST)
+    if len(errors) > 0:
+        for value in errors.values():
+            messages.error(request, value)
+        return redirect(f'/job/interview_helper/{user_id}')
     this_state = State.objects.create(abbr=request.POST['state'])
     this_loc_int = Location.objects.create(
         city = request.POST['city'],

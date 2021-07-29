@@ -131,25 +131,28 @@ class FormManager(models.manager):
 
     def create_interview_helper_validator(self, postData):
         errors = {}
-        if len(postData['elevator-pitch']) < 1:
-            errors['elevator_empty'] = "Elevator Pitch cannot be blank"
-        if len(postData['elevator-pitch']) < 255:
-            errors['elevator_long'] = "Elevator Pitch cannot be longer than 255 characters"
+        if 'elevator-pitch' in postData:
+            if len(postData['elevator-pitch']) < 1:
+                errors['elevator_empty'] = "Elevator Pitch cannot be blank"
+            if len(postData['elevator-pitch']) < 255:
+                errors['elevator_long'] = "Elevator Pitch cannot be longer than 255 characters"
+        if 'str_weak' in postData:
+            if len(postData['str_weak']) < 1:
+                errors['str_weak_empty'] = "Strengths and Weaknesses cannot be blank"
+            if len(postData['str_weak']) < 255:
+                errors['str_weak_long'] = "Strengths and Weaknesses cannot be longer than 255 characters"
 
-        if len(postData['str_weak']) < 1:
-            errors['str_weak_empty'] = "Strengths and Weaknesses cannot be blank"
-        if len(postData['str_weak']) < 255:
-            errors['str_weak_long'] = "Strengths and Weaknesses cannot be longer than 255 characters"
-
-        if len(postData['accomplishments']) < 1:
-            errors['accomplishments_empty'] = "Accomplishments cannot be blank"
-        if len(postData['accomplishments']) < 255:
-            errors['accomplishments_long'] = "Accomplishments cannot be longer than 255 characters"
+        if "accomplishments" in postData:
+            if len(postData['accomplishments']) < 1:
+                errors['accomplishments_empty'] = "Accomplishments cannot be blank"
+            if len(postData['accomplishments']) < 255:
+                errors['accomplishments_long'] = "Accomplishments cannot be longer than 255 characters"
         
-        if len(postData['common_qa']) < 1:
-            errors['common_qa_empty'] = "Common Q&A cannot be blank"
-        if len(postData['common_qa']) < 255:
-            errors['common_qa_long'] = "Common Q&A cannot be longer than 255 characters"
+        if "common_qa" in postData:
+            if len(postData['common_qa']) < 1:
+                errors['common_qa_empty'] = "Common Q&A cannot be blank"
+            if len(postData['common_qa']) < 255:
+                errors['common_qa_long'] = "Common Q&A cannot be longer than 255 characters"
         return errors
 
     def create_job_interest_validator(self, postData):
