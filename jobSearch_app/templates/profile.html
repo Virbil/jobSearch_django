@@ -37,6 +37,15 @@
                 <div class="col-12 mb-3">
                     <h1>PROFILE PAGE</h1>
                 </div>
+                <div class="col-12 text-center">
+                    {%if messages%}
+                    <ul class="errors">
+                        {%for message in messages%}
+                            <li class="text-danger ">{{message}}</li>
+                        {%endfor%}
+                    </ul>
+                    {% endif %}
+                </div>
                 <div class="col-md-6">
                     <h3>
                         {{user.first_name}} {{user.last_name}}
