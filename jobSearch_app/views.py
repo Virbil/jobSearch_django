@@ -176,8 +176,8 @@ def post_job(request, user_id):
             salary_min = request.POST['min'],
             salary_max = request.POST['max'],
             job_url = request.POST['job_url'],
-            summary = request.POST['summary'],
-            job_desc = request.POST['description'],
+            summary = f"{request.POST['summary']};",
+            job_desc = f"{[request.POST['description']]}",
         )
 
         qualifications = Qualification.objects.create(
