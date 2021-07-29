@@ -150,28 +150,37 @@ def post_job(request, user_id):
     if 'userid' in request.session:
         user = User.objects.get(id = user_id)
         location = request.POST['city'].title() + ',' + request.POST['state'].upper()
-        new_position = Position.objects.create(
-            title = request.POST['job_title'],
-        )
-        new_position.pos_saves.add(user)
+        print(request.POST['job_title'])
+        print(request.POST['company'])
+        print(request.POST['post_date'])
+        print(request.POST['min'])
+        print(request.POST['max'])
+        print(request.POST['job_url'])
+        print(request.POST['summary'])
+        print(request.POST['description'])
+        print(request.POST['required'])
+        # new_position = Position.objects.create(
+        #     title = request.POST['job_title'],
+        # )
+        # new_position.pos_saves.add(user)
 
-        new_job = Job.objects.create(
-            job_title = new_position,
-            company = request.POST['company'],
-            location = location,
-            post_date = request.POST['post_date'],
-            salary_min = request.POST['min'],
-            salary_max = request.POST['max'],
-            job_url = request.POST['job_url'],
-            summary = request.POST['summary'],
-            job_desc = request.POST['description'],
-        )
+        # new_job = Job.objects.create(
+        #     job_title = new_position,
+        #     company = request.POST['company'],
+        #     location = location,
+        #     post_date = request.POST['post_date'],
+        #     salary_min = request.POST['min'],
+        #     salary_max = request.POST['max'],
+        #     job_url = request.POST['job_url'],
+        #     summary = request.POST['summary'],
+        #     job_desc = request.POST['description'],
+        # )
 
-        qualifications = Qualification.objects.create(
-            name = request.POST['required']
-        )
-        new_job.qualifications.add(qualifications)
-        new_job.likes.add(user)
+        # qualifications = Qualification.objects.create(
+        #     name = request.POST['required']
+        # )
+        # new_job.qualifications.add(qualifications)
+        # new_job.likes.add(user)
 
         return redirect('/job')
     else: 
